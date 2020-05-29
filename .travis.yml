@@ -2,11 +2,11 @@ language: r
 sudo: false
 os:
   - linux
+dist: bionic
 cache:
   packages: true
 r:
   - bioc-devel
 before_install:
   - tlmgr install index
-  - sudo apt-get -y update
   - sudo apt-get install -y cwltool
