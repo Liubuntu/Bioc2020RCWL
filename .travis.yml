@@ -6,8 +6,7 @@ dist: bionic
 addons:
   apt:
     packages:
-    - python2.7
-    - pip
+    - python-pip
 cache:
   packages: true
 r:
