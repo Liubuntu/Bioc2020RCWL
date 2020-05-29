@@ -3,12 +3,15 @@ sudo: false
 os:
   - linux
 dist: bionic
+addons:
+  apt:
+    packages:
+    - python2.7
+    - pip
 cache:
   packages: true
 r:
   - bioc-devel
 before_install:
   - tlmgr install index
-  - sudo apt-get -y update
-  - sudo apt-get install -y python2.7 pip
   - sudo pip install cwltool
