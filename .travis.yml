@@ -10,4 +10,5 @@ r:
 before_install:
   - tlmgr install index
   - sudo apt-get -y update
-  - sudo apt-get install -y cwltool
+  - sudo apt-get install -y python2.7 pip
+  - sudo pip install cwltool
