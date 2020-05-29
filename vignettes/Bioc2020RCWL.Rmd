@@ -5,7 +5,6 @@ output:
     toc: true
     toc_depth: 3
     fig_width: 5
-bibliography: "`r system.file(package='dummychapter1', 'vignettes', 'bibliography.bib')`"
 vignette: >
   %\VignetteIndexEntry{Bioc2020RCWL}
   %\VignetteEngine{knitr::rmarkdown}

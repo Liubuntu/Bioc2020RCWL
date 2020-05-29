@@ -1,21 +1,27 @@
-# Instructions for the workshop development
+# Connecting Bioconductor to other bioinformatics tools using `Rcwl`
 
-- Clone or fork https://github.com/lpantano/dummychapter1 to use as a template for creating your workshop as an installable package
-- Use [vignettes/dummychapter1.Rmd](vignettes/dummychapter1.Rmd) vignette as a formatting example for your workshop
-- Use [Docker Container for Bioconductor](https://github.com/Bioconductor/bioconductor_docker) to test your workshop for compatibility with `bioconductor/bioconductor_docker:devel`. This is important for attendees that will have access to Amazon Machine Images preloaded with R and RStudio servers and tested versions of all workshops. Example how to run Docker and access RStudio at http://localhost:8787/ (RStudio access works on Mac/Unix only)
-```
-docker run -e PASSWORD=bioc -p 8787:8787 -v $(pwd):/home/rstudio bioconductor/bioconductor_docker:devel
-```
+## Instructor(s) name(s) and contact information
 
-- Commit and push a sample `.travis.yml` file for implementing Continuous Integration against `bioc-devel`
-    - Register on https://travis-ci.org/ with your GitHub account
-    - Allow Travis access to all GitHub repositories 
-    - Ensure Travis sees your repository and triggers the build on push (or, change to pull request only build)
+* [Qian Liu](https://github.com/liubuntu) (Qian.Liu@roswellpark.org)
+* [Qiang Hu](https://github.com/hubentu) (Qiang.Hu@roswellpark.org)
 
-- Write your workshop vignette, modify the `DESCRIPTION` file to add the dependencies. It is important that all dependencies be declared and that your workshop vignette can be built without errors on the Docker image we are using.
-    - Make your workshop independent on packages installable from GitHub only. We strongly recommend using packages available from CRAN or `bioc-devel`
-    - Data should ideally come from existing Bioconductor packages or the [Bioconductor ExperimentHub](http://bioconductor.org/packages/release/bioc/html/ExperimentHub.html) for speed, reliability, and local caching. If suitable data are not available via these options, additional data can be downloaded but we recommend you utilize [BiocFileCache](https://www.bioconductor.org/packages/release/bioc/html/BiocFileCache.html) for the download process to preserve bandwidth from repeated downloading. 
-    - The workshops will be collated into a training booklet that will be made freely available under the [CC BY 4.0 license](http://creativecommons.org/licenses/by/4.0/). Review the `LICENSE` file - contribution of your workshop will be taken as agreement to have your workshop materials included under this license
-    - Use the Build/Check button in RStudio, or `R CMD check` to ensure your workshop package checks without warnings
-    
-- We recommend communicating through the #biocworkshopbook channel on the `community-bioc` Slack team (https://community-bioc.slack.com/archives/CJDMYKG2U) for help
+## Workshop Description
+
+This workshop introduces the Bioconductor toolchain for usage and
+development of reproducible bioinformatics pipelines using packages of
+Rcwl and RcwlPipelines. The Common Workflow Language (CWL) is an open
+standard for development of data analysis workflows that is portable
+and scalable across different tools and working environments. Rcwl
+provides a simple way to wrap command line tools and build CWL data
+analysis pipelines programmatically within R. It increases the ease of
+development, usage, and maintenance of CWL pipelines, and furthermore
+offers higher performance by intuitively supporting parallel work on
+high performance computing (HPC). hundreds of pre-built bioinformatics
+pipelines in CWL are included in RcwlPipelines. The tools and
+pipelines are highly modularized for easy customization of complex
+bioinformatics analysis. An scRNA-seq pipeline using STARsolo for
+alignment and quantification, DropletUtils for filtering raw
+gene-barcode matrix, fastqc and multiqc for reads quality control will
+demonstrate the typical use case of these two packages. More details
+for usage and examples are available on Rcwl website:
+https://hubentu.github.io/Rcwl/.
