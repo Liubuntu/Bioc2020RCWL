@@ -11,6 +11,7 @@ Authors@R:
 Maintainer: The package maintainer <qian.liu@roswellpark.org>
 Description: This is a package for the CWL workshop presented at Bioc2020.
 Depends: R (>= 4.0.0), Rcwl, RcwlPipelines
+Imports: BiocParallel, shiny
 Encoding: UTF-8
 LazyData: true
 License: CC BY 4.0  + file LICENSE
