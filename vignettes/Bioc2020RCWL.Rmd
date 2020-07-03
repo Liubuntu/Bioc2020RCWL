@@ -160,7 +160,7 @@ World!" to the object. Without defining the outputs, it will stream
 standard output to a temporary file by default.
 
 ```{r}
-echo$content <- "Hello World!"
+echo$sth <- "Hello World!"
 echo
 ```
 
@@ -606,6 +606,10 @@ Last, we define the outputs for the whole pipeline and connect all steps.
 ## outputs
 ## o1 <- OutputParam(id = "Bam", type = "File", outputSource = "markdup/mBam")
 o1 <- OutputParam(id = "Idx", type = "File", outputSource = "idxBam/idx")
+## stepParam
+Align <- cwlStepParam(requirements = list(),
+                      inputs = InputParamList(p1, p2, p3, p4, p5),
+                      outputs = OutputParamList(o1))
 ## build pipeline
 Align <- Align + s1 + s2 + s3 + s4
 ```

@@ -1,15 +1,36 @@
 Package: Bioc2020RCWL
 Type: Package
-Title: Bioc2020 Rcwl workshop
+Title: Bioconductor toolchain for usage and development of reproducible bioinformatics pipelines in CWL
 Version: 0.1.0
 Authors@R: 
     person(given = "Qian",
            family = "Liu",
            role = c("aut", "cre"),
            email = "qian.liu@roswellpark.org",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Maintainer: The package maintainer <qian.liu@roswellpark.org>
-Description: This is a package for the CWL workshop presented at Bioc2020.
+           comment = c(ORCID = "0000-0003-1456-5099"))
+Maintainer: Qian Liu <qian.liu@roswellpark.org>
+Description: This workshop introduces the Bioconductor toolchain for
+	     usage and development of reproducible bioinformatics
+	     pipelines using packages of Rcwl and RcwlPipelines. The
+	     Common Workflow Language (CWL) is an open standard for
+	     development of data analysis workflows that is portable
+	     and scalable across different tools and working
+	     environments. Rcwl provides a simple way to wrap command
+	     line tools and build CWL data analysis pipelines
+	     programmatically within R. It increases the ease of
+	     development, usage, and maintenance of CWL pipelines, and
+	     furthermore offers higher performance by intuitively
+	     supporting parallel work on high performance computing
+	     (HPC). hundreds of pre-built bioinformatics pipelines in
+	     CWL are included in RcwlPipelines. The tools and
+	     pipelines are highly modularized for easy customization
+	     of complex bioinformatics analysis. An scRNA-seq pipeline
+	     using STARsolo for alignment and quantification,
+	     DropletUtils for filtering raw gene-barcode matrix will
+	     demonstrate the typical use case of these two
+	     packages. More details for usage and examples are
+	     available on Rcwl
+	     website(https://hubentu.github.io/Rcwl/)
 Depends: R (>= 4.0.0), Rcwl, RcwlPipelines
 Imports: BiocParallel, shiny
 Encoding: UTF-8
