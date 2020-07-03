@@ -50,8 +50,8 @@ jobs:
       # deploy needs rsync? Seems so.
       - name: Install deploy dependencies
         run: |
-          apt-get update
-          apt-get -y install rsync
+          apt-get update --allow-insecure-repositories
+          apt-get install -y --allow-unauthenticated rsync
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
