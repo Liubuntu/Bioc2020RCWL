@@ -1,0 +1,18 @@
+url: https://hubentu.github.io/Bioc2020Rcwl
+
+template:
+  params:
+    bootswatch: flatly
+    ganalytics: UA-93043521-1
+
+home:
+  title: "Bioc2020 Rcwl"
+  type: inverse
+
+
+navbar:
+  right:
+   - icon: fa-github
+     href: https://github.com/hubentu/Bioc2020Rcwl
+     
+
