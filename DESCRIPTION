@@ -39,5 +39,6 @@ License: CC BY 4.0  + file LICENSE
 RoxygenNote: 7.1.0
 VignetteBuilder:
     knitr,
-    rmarkdown
+    rmarkdown,
+    pkgdown
 Suggests: knitr, rmarkdown
