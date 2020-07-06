@@ -1,5 +1,5 @@
 # Connecting Bioconductor to other bioinformatics tools using `Rcwl`
-[](https://github.com/liubuntu/Bioc2020RCWL/workflows/.github/workflows/basic_checks.yaml/badge.svg)
+![](https://github.com/liubuntu/Bioc2020RCWL/workflows/.github/workflows/basic_checks.yaml/badge.svg)
 
 ## Instructor(s) name(s) and contact information
 
