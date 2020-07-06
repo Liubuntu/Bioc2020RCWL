@@ -42,3 +42,5 @@ VignetteBuilder:
     rmarkdown
 SystemRequirements: python (>= 3.6), cwltool (>= 1.0.2018)
 Suggests: knitr, rmarkdown, pkgdown
+URL: https://liubuntu.github.io/Bioc2020Rcwl
+DockerImage: liubuntu/bioc2020rcwl:latest
