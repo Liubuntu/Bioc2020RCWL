@@ -40,5 +40,5 @@ RoxygenNote: 7.1.0
 VignetteBuilder:
     knitr,
     rmarkdown
-Suggests: knitr, rmarkdown
 SystemRequirements: python (>= 3.6), cwltool (>= 1.0.2018)
+Suggests: knitr, rmarkdown, pkgdown
