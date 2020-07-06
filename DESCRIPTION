@@ -41,3 +41,4 @@ VignetteBuilder:
     knitr,
     rmarkdown
 Suggests: knitr, rmarkdown
+SystemRequirements: python (>= 3.6), cwltool (>= 1.0.2018)
