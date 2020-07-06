@@ -1,4 +1,4 @@
-url: https://hubentu.github.io/Bioc2020Rcwl
+url: https://liubuntu.github.io/Bioc2020Rcwl
 
 template:
   params:
@@ -13,6 +13,6 @@ home:
 navbar:
   right:
    - icon: fa-github
-     href: https://github.com/hubentu/Bioc2020Rcwl
+     href: https://github.com/liubuntu/Bioc2020Rcwl
      
 
