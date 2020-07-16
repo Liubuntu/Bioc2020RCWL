@@ -1,7 +1,7 @@
 Package: Bioc2020RCWL
 Type: Package
 Title: Bioconductor toolchain for usage and development of reproducible bioinformatics pipelines in CWL
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Qian",
            family = "Liu",
@@ -36,7 +36,7 @@ Imports: BiocParallel, shiny
 Encoding: UTF-8
 LazyData: true
 License: CC BY 4.0  + file LICENSE
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder:
     knitr,
     rmarkdown

@@ -26,22 +26,22 @@ standard for development of data analysis workflows that is portable
 and scalable across different tools and working environments. Rcwl
 provides a simple way to wrap command line tools and build CWL data
 analysis pipelines programmatically within R. It increases the ease of
-development, usage, and maintenance of CWL pipelines, and furthermore
-offers higher performance by intuitively supporting parallel work on
-high performance computing (HPC). hundreds of pre-built bioinformatics
-pipelines in CWL are included in RcwlPipelines. The tools and
-pipelines are highly modularized for easy customization of complex
-bioinformatics analysis. An scRNA-seq pipeline using STARsolo for
-alignment and quantification, DropletUtils for filtering raw
-gene-barcode matrix, fastqc and multiqc for reads quality control will
-demonstrate the typical use case of these two packages. More details
-for usage and examples are available on Rcwl website:
-https://hubentu.github.io/Rcwl/.
+usage, development, and maintenance of CWL pipelines, and furthermore
+offers higher performance by intuitively supporting parallel work with
+high performance computing (HPC). More than a hundred of pre-built and
+tested CWL tool/pipeline recipes are included in RcwlPipelines. These
+tools and pipelines are highly modularized for easy customization of
+complex bioinformatics analysis. Here we included a scRNAseq
+preprocessing pipeline which uses `STARsolo` for alignment and
+quantification, and `DropletUtils` for filtering raw gene-barcode
+matrix and removing empty droplets. This pipeline demonstrates the
+typical use case of our packages. More details for usage and examples
+are available on Rcwl website: https://hubentu.github.io/Rcwl/.
 
 
 ## Pre-requisites
 
-- Basic knowledge of R and usage of Bioconductor packages for NGS analysis
+- Basic knowledge of using R and Bioconductor packages
 - Basic familiarity with running command-line tools
 - No prior experience with CWL is necessary!
 
@@ -70,8 +70,8 @@ System dependencies
 
 | Activity                                          | Time |
 |---------------------------------------------------|------|
-| Overview of bioinformatics pipelines and CWL      | 15m  |
-| Use existing bioinfo pipelines in `RcwlPipelines` | 15m  |
+| Overview of bioinformatics pipelines and CWL      | 10m  |
+| Use existing pipelines in `RcwlPipelines`         | 15m  |
 | Wrap command line tools using `Rcwl`              | 15m  |
 | Customize your own pipelines using `Rcwl`         | 15m  |
 
@@ -170,17 +170,19 @@ cwlVersion(echo)  ## "v1.0"
 cwlClass(echo)    ## "CommandLineTool", can be ""
 baseCommand(echo) ## "echo"
 inputs(echo)      ## command line arguments and values
-outputs(echo)     ## the name of output results/files to be saved out to pass to later steps in pipeline
-arguments(echo)   ## command line arguments
+outputs(echo)     ## the name of output results/files to be saved out
+                  ## to pass to later steps in pipeline
+arguments(echo)   ## command line arguments that pass by default, no
+                  ## need to assign values.
 ```
 
 #### Test run
 The function `runCWL` is used to run the CWL object by invoking the
-python tool `cwltool`. The return will be a list including the command
-executed, temporary output and logs. The output directory is the
-current folder by default, but it can be changed by setting `outdir`
-option. All standard out and standard error stream can also be printed
-by setting `stderr = ""`.
+python tool `cwltool`. The returned value is a list with the shell
+command executed, temporary output and logs. The output directory is
+the current folder by default, but it can be changed by setting
+`outdir` argument. All standard out and standard error stream can also
+be printed by setting `stderr = ""`.
 
 ```{r}
 r1 <- runCWL(echo, outdir = tempdir())
@@ -207,13 +209,16 @@ The log shows the details of how the `cwltool` works with CWL scripts.
 r1$log
 ```
 
-The `runCWL` internally generates two scripts: the configuration
-".cwl" file and the input value ".yml" file. The location and prefix
-name of these two files are defined with the argument `prefix`, where
-the default is `tempfile()`. The cwltool parses the two scripts and
-translates them into the command shown in `r1$command`. Since the
-output is not defined in `echo`, so the output was returned to
-__stdout__ by default in a `r1$output`.
+Internally, the `runCWL` generates two scripts: the ".cwl"
+configuration file and the ".yml" file containing input parameter
+values. The location and prefix name of these two files are defined
+with the argument `prefix`, with the default value as
+`tempfile()`.   
+
+The `cwltool` parses the two scripts and translates them into shell
+command shown in `r1$command`. Since the output prameters are not
+defined in the `echo` object, so the output was returned to __stdout__
+by default with the filepath in `r1$output`.
 
 ### Components
 #### Input Parameters
@@ -227,8 +232,8 @@ etc. The *prefix* is the command line prefix that can be in varied
 formats based on users' habit. More detail can be found at:
 <htps://www.commonwl.org/v1.0/CommandLineTool.html#CWLType>.
 
-Here is an example from the CWL user
-guide(<http://www.commonwl.org/user_guide/03-input/>). We defined the
+Here is an example from the CWL user guide
+(<http://www.commonwl.org/user_guide/03-input/>). We defined the
 `echo` with different type of input parameters by `InputParam`, and
 the `stdout` option can be used to capture the standard output stream
 into a file:
@@ -289,7 +294,7 @@ readLines(r3$output)
 ```
 
 #### Output Parameters
-1. Capturing Output
+1. Capturing Output for passing in pipeline
 
 The outputs, similar to the inputs, is a list of output
 parameters. Three options, *id*, *type* and *glob*, are usually
@@ -337,7 +342,11 @@ readLines(r4$output)
 ## print(r4$command)
 ```
 
-Or we can use `arguments` to set some default parameters:
+When building the cwl tool using `runCWL`, We can use `arguments`
+argument to include some parameters with default values so that when
+users use this tool, they don't need to assign values for all
+(especially some trivial) parameters.
+
 ```{r}
 z1 <- InputParam(id = "zfile", type = "File")
 o1 <- OutputParam(id = "rfile", type = "File", glob = ofile)
@@ -473,14 +482,17 @@ readLines(rtoolres$output)  ## check results
 
 #### RcwlPipelines package
 
-We have collected the _R_ scripts building CWL tools and pipelines in
-a GitHub repository now (https://github.com/hubentu/RcwlRecipes), This
-repository is intended to be a community effort for bioinformatics
-tools and pipelines built with _Rcwl_ and CWL directly.
+We have collected all recipes (_R_ scripts)that build CWL tools and
+pipelines in a GitHub repository now
+(https://github.com/hubentu/RcwlRecipes), This repository is intended
+to be a community effort for bioinformatics tools and pipelines built
+with _Rcwl_ and CWL directly.
 
-Three core functions are defined to extract (`cwlUpdate`), search
-(`cwlSearch`), and load (`cwlInstall`) the _Rcwl_ recipes to the _R_
-environment.
+Three core functions are defined for convenient usage of these recipes: 
+
+- `cwlUpdate`: sync the recipes.
+- `cwlSearch`: search tools or pipelines using keywords.
+- `cwlInstall`: source the R object of CWL tool or pipeline into R working environment.
 
 1. Indexing recipe scripts 
 
@@ -493,11 +505,6 @@ an example.
 ```{r}
 tools <- cwlUpdate(cachePath = tempfile())
 tools
-```
-
-Let's take a quick look at this `BiocFileCache` object. 
-
-```{r}
 bfcinfo(tools)  ## show a tibble list with all available tools. Use
                 ## "methods(class="BiocFileCache")" to see all
                 ## available functions for an "BiocFileCache" object.
@@ -507,9 +514,9 @@ data.frame(bfcinfo(tools)[1,])
 
 2. Search by keyword 
 
-The function `cwlSearch` helps to search indexed
-recipes with keywords. In the following example, let's find the
-alignment tool using keywords "bwa" and "mem".
+The function `cwlSearch` helps to search indexed recipes with
+keywords. In the following example, let's find the alignment tool
+using keywords "bwa" and "mem".
 
 ```{r}
 tl <- cwlSearch(c("bwa", "mem"), tools)
@@ -519,19 +526,13 @@ tl$rname
 3. Load tools and pipelines
 
 The function `cwlInstall` “installs” the tools or pipelines
-to current environment by given the script path.
+to current environment using the name or the file path to the script.
 a
 ```{r}
-cwlInstall(tl$rpath)
+cwlInstall(tl$rname)
+cwlInstall(tl$fpath)  ## equivalent
 bwa
 ```
-
-We can also install the tools by its "rname" directly.
-
-```{r}
-cwlInstall(rname = 'tl_bwa', bfc = tools)
-```
-So now the CWL tool “bwa” is ready to use within _R_.
 
 #### Build a pipeline
 
