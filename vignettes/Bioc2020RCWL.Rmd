@@ -530,7 +530,7 @@ to current environment using the name or the file path to the script.
 a
 ```{r}
 cwlInstall(tl$rname)
-cwlInstall(tl$fpath)  ## equivalent
+## cwlInstall(tl$fpath)  ## equivalent
 bwa
 ```
 
