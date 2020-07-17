@@ -36,6 +36,7 @@ jobs:
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
           install.packages('Rcpp', repos='http://cran.r-project.org')
+          BiocManager::install(c('hubentu/Rcwl', 'hubentu/RcwlPipelines'))
         shell: Rscript {0}
 
       - name: Check
