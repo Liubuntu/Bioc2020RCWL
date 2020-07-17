@@ -2,7 +2,7 @@ on: [push]
 jobs:
   job1:
     runs-on: ubuntu-latest
-    container: liubuntu/bioc2020rcwl:latest
+    container: hubentu/bioc2020rcwl:latest
     steps:
       - uses: actions/checkout@v1
 
@@ -35,6 +35,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE, repos = BiocManager::repositories())
           remotes::install_cran("rcmdcheck")
+          install.packages('Rcpp', repos='http://cran.r-project.org')
         shell: Rscript {0}
 
       - name: Check
