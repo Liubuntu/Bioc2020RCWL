@@ -22,5 +22,6 @@ ENV PATH=/opt/STAR:$PATH
 RUN rm -r /usr/local/lib/python2.7/dist-packages/cwltool & rm /usr/local/bin/cwltool
 RUN pip3 install -I cwltool
 
+RUN Rscript -e "install.packages('Rcpp', repos='http://cran.r-project.org')"
 RUN Rscript -e "BiocManager::install(c('RcwlPipelines', 'DropletUtils'))"
 RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=TRUE, repos = BiocManager::repositories())"
