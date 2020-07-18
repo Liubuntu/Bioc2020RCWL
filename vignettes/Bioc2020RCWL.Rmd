@@ -525,12 +525,12 @@ tl$rname
 
 3. Load tools and pipelines
 
-The function `cwlInstall` “installs” the tools or pipelines
+The function `cwlInstall` "installs" the tools or pipelines
 to current environment using the name or the file path to the script.
-a
+
 ```{r}
-cwlInstall(tl$rname)
-## cwlInstall(tl$fpath)  ## equivalent
+cwlInstall(tl$rname, tools)
+cwlInstall(tl$fpath)  ## equivalent
 bwa
 ```
 
