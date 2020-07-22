@@ -26,7 +26,7 @@ standard for development of data analysis workflows that is portable
 and scalable across different tools and working environments. Rcwl
 provides a simple way to wrap command line tools and build CWL data
 analysis pipelines programmatically within R. It increases the ease of
-usage, development, and maintenance of CWL pipelines, and furthermore
+use, development, and maintenance of CWL pipelines, and furthermore
 offers higher performance by intuitively supporting parallel work with
 high performance computing (HPC). More than a hundred of pre-built and
 tested CWL tool/pipeline recipes are included in RcwlPipelines. These
@@ -59,8 +59,8 @@ Some basic idea about how CWL works.
 
 * [`Rcwl`](https://bioconductor.org/packages/Rcwl/)
 * [`RcwlPipelines`](https://bioconductor.org/packages/RcwlPipelines/)
-* [`BiocParallel`](https://bioconductor.org/packages/BiocParallel/)
-*[`shiny`](https://CRAN.R-project.org/package=shiny)
+<!-- * [`BiocParallel`](https://bioconductor.org/packages/BiocParallel/) -->
+<!-- *[`shiny`](https://CRAN.R-project.org/package=shiny) -->
 
 System dependencies
 * [cwltool](https://github.com/common-workflow-language/cwltool)
@@ -68,12 +68,16 @@ System dependencies
 
 ## Time outline
 
-| Activity                                          | Time |
-|---------------------------------------------------|------|
-| Overview of bioinformatics pipelines and CWL      | 10m  |
-| Use existing pipelines in `RcwlPipelines`         | 15m  |
-| Wrap command line tools using `Rcwl`              | 15m  |
-| Customize your own pipelines using `Rcwl`         | 15m  |
+| Activity                                                      | Time |
+|---------------------------------------------------------------|------|
+| Overview of bioinformatics pipelines and CWL (ppt)            | 10 min |
+| Use core functions to update, search and load tools/pipelines | 5 min  |
+| Use single cell indexing tool `STARindex`                     | 5 min |
+| Use single cell alignment tool `STARsolo`                     | 5 min  |
+| Use single cell filtering tool `DropletUtils`                 | 5 min  |
+| Use single cell preprocessing pipeline `STARsoloDropletUtils` | 5 min  |
+| Wrap command line tools using `Rcwl`                          | 0m (developers only) |
+| Customize your pipelines using `Rcwl`                         | 0m (developers only) |
 
 ## Workshop goals and objectives
 
@@ -81,575 +85,280 @@ System dependencies
 
 * Basic knowledge of Common Workflow Language (CWL)
 * Knowledge of R/Bioconductor interface of CWL
-* Usage of the pre-built bioinformatics pipelines in R
-* Understand how to wrap command line tools with Rcwl
-* Understand how to build bioinformatics pipelines with Rcwl
+* Usage of the pre-built bioinformatics tools and pipelines in _R_
+* Understand how to wrap command line tools with `Rcwl` (developers only)
+* Understand how to build bioinformatics pipelines with `Rcwl` (developers only)
 
 ### Learning objectives
 
-* Run the scRNA-seq pipeline included in RcwlPipelines
-* Create a basic echo tool using Rcwl
-* Build a simple scRNA-seq alignment tool STARsolo
+* Run the scRNA-seq indexing tool `STARindex` in _R_
+* Run the scRNA-seq alignment tool `STARsolo` in _R_
+* Run the scRNA-seq QC tool `DropletUtils` in _R_
+* Run the scRNA-seq preprocessing pipeline which combines alignment and QC steps in _R_
+* Create a basic echo tool using `Rcwl` (developers only)
+* ?? Build a basic pipeline ??? using `RCWL` (developers only) 
 
 ## Introduction to CWL
 
-CWL CommandLineTool description:
+Please see details in the slides. 
 
-CWL Workflow description:
+## single cell RNA sequencing data 
 
-## Rcwl
-### Introduction to Rcwl
-#### Rcwl setup
-The `Rcwl` package is aimed at a simple and user-friendly way to
-manage command line tools and build data analysis pipelines in R using
-Common Workflow Language (CWL). The `Rcwl` and `RcwlPipelines`
-packages are available in Bioc 3.11 and R >= 3.6. You can install them
-by the `BiocManager` package.
+### Data resources
+
+We have prepared all the files needed in this workshop in a GitHub
+repository, and now we need to download these files to a local
+temporary folder for the demo purpose. We will also use the `path`
+below as the file path to save all intermediate files.
 
 ```{r}
-if (!requireNamespace("RcwlPipelines", quietly = TRUE))
-	BiocManager::install(c("Rcwl", "RcwlPipelines"))
+library(git2r)
+path <- file.path(tempfile(pattern="git2r-"), "testdata")
+dir.create(path, recursive=TRUE)
+repo <- clone("https://github.com/hubentu/testdata.git", path)
+dir(path)
+```
+
+The single cell data resource we are using today is the 1k PBMCs from
+a Healthy Donor (v3 chemistry) from 10x genomics, consisting of 1000
+Peripheral blood mononuclear cells (PBMCs) extracted from a healthy
+donor, where PBMCs are primary cells with relatively small amounts of
+RNA (~1pg RNA/cell). 
+
+The source material consists of 6 FASTQ files split into two
+sequencing lanes L001 and L002, each with three reads of R1
+(barcodes), R2 (cDNA sequences), I1 (illumina lane infold). The Cell
+Ranger pipeline requires all three files to perform the demultiplexing
+and quantification, but RNA STARsolo does not require the I1 lane file
+to perform the analysis. The source files can be found
+[here](https://zenodo.org/record/3457880#.XxLjOvhKjvU).
+
+For this tutorial, we will use datasets sub-sampled from the source
+files to contain only 15 cells instead of 1000. We have also further
+curated the data to only include reads on chromosome 21, so that the
+real execuation of our CWL tools/pipelines in _R_ can be done within
+1~2 minutes for each step. 
+```
+subset15_chr21_pbmc_1k_v3_S1_L001_R1_001.fastq.gz
+subset15_chr21_pbmc_1k_v3_S1_L001_R2_001.fastq.gz
+subset15_chr21_pbmc_1k_v3_S1_L002_R1_001.fastq.gz
+subset15_chr21_pbmc_1k_v3_S1_L002_R2_001.fastq.gz
+```
+
+For the mapping, we need a “whitelist” of known cell barcodes. Here we
+used the 15 barcodes that we already subsetted. The original 737,000
+barcodes can be freely extracted from the [Cell Ranger
+pipeline](https://kb.10xgenomics.com/hc/en-us/articles/115004506263-What-is-a-barcode-whitelist)).
+
+``` 
+subset15_demo_barcode.txt 
+``` 
+
+The barcodes in the R1 FASTQ data are checked against these known cell
+barcodes in order to assign a specific read to a specific known
+cell. The barcodes are designed in such a manner that there is
+virtually no chance that they will align to a place in the reference
+genome. 
+
+In this tutorial we will be using hg19 (GRCh37) version of the
+human genome, and will therefore also need to use a hg19 GTF fileto
+annotate our reads (on chromosome 21 only).
+
+```
+chr21.fa
+Homo_sapiens.GRCh37.75.21.gtf
+```
+
+10x Genomics has its own processing pipeline, `Cell Ranger` to process
+the scRNA-seq outputs it produces, but this process requires much
+configuration to run and is significantly slower than other mappers.
+
+### `Rcwl` version of scRNA-seq preprocessing steps
+
+In this tutorial, we are trying to reproduce the [GALAXY
+pipeline](https://galaxyproject.github.io/training-material/topics/transcriptomics/tutorials/scrna-preprocessing-tenx/tutorial.html#producing-a-count-matrix-from-fastq)
+for scRNA-seq data pre-processing. We will use `STARsolo` to produce a
+count matrix from FASTQ, and `DropletUtils` to produce a high quality
+count matrix with feature/cell annotation files saved in an R object
+of `SingleCellExperiment`. Before these 2 steps, we have also added a
+one-time indexing step in our workshop.
+
+#### Loading the tools
+
+With `Rcwl`, we can easily write cwl tools and pipelines
+programmatically in _R_ (Will cover more of this topic later for
+developers). While we already have the _R_ version of many command
+line tools in `RcwlPipelines`, all we need to do is: 1) Search and
+load the tools/pipelines, 2) assign values for each of the defined
+parameters, 3) execute the command, and 4) get results saved in
+user-specified directory, all within _R_.
+
+Here we show the usage of 3 core functions: `cwlUpdate`, `cwlSearch`
+and `cwlInstall`. 
+
+##### `cwlUpdate`
+The `cwlUpdate` syncs the current Rcwl recipes and return a
+`BiocFileCache` object which contains the most updated Rcwl recipes.
+
+```{r}
 library(Rcwl)
 library(RcwlPipelines)
+atls <- cwlUpdate()  ## sync the tools/pipelines
+atls
 ```
 
-#### System requirements
-
-In addition to the R packages, the following tools are required to be
-installed to run the examples in this document.
-
-* cwltool (>= 1.0.2018)
-* nodejs
-* Docker (optional)
-
-The `cwltool` is the reference implementation of the Common Workflow
-Language, which is used to run the CWL scripts. The `nodejs` is
-required when the CWL scripts use the JavaScript language. The Docker
-containers simplify software installation and management. A CWL runner
-can pull the required Docker containers automatically and adjust the
-paths of input files.
-
-You can find instructions to install these tools here:
-
-* <https://github.com/common-workflow-language/cwltool#install>
-* <https://nodejs.org>
-* <https://docs.docker.com/install>
-
-### First example
-#### Hello world
-The main class and constructor function is `cwlParam`, which wrap a
-command line tool and its parameters in a `cwlParam` object. Let's
-start with a simple example, `echo hello world`.
-
-First, we load the package and then define the input parameter for
-"echo", a string without a prefix. Just an `id` option is required.
+the `bfcinfo()` function returns a BiocFileCache tibble containing all
+information about each available tool or pipeline. Currently we have
+integrated 103 command line tools and 26 pipelines.
 
 ```{r}
-input1 <- InputParam(id = "sth")
+bfcinfo(atls)
+bfcinfo(atls)$Type
 ```
 
-Second, we create a `cwlParam` object with `baseCommand` for the
-command to execute and `InputParamList` for the input parameters.
+##### `cwlSearch`
+
+We can use keywords to search for any specific tools/pipelines of
+interest, which internally search the keywords against the
+BiocFileCache tibble in columns of "rname", "rpath", "fpath",
+"Command" and "Containers". Multiple keywords are allowed.
 
 ```{r}
-echo <- cwlParam(baseCommand = "echo", inputs = InputParamList(input1))
+tls <- cwlSearch(c("STAR", "index"))
+data.frame(tls)
 ```
 
-Now we have a command object to run. Let's send a string "Hello
-World!" to the object. Without defining the outputs, it will stream
-standard output to a temporary file by default.
+The last core function is `cwlInstall` which sources the Rcwl script
+for the interested tool/pipeline into the _R_ working environment.
 
 ```{r}
-echo$sth <- "Hello World!"
-echo
+cwlInstall(tls$rname[2])  ## "tl_STARindex"
+cwlInstall(tls$fpath[2])  ## equivalent to the above. 
+STARindex
+cwlVersion(STARindex)
+inputs(STARindex)
+outputs(STARindex)
+requirements(STARindex)
 ```
 
-We also defined some convenient accessor function for the `cwlParam` object. 
-```{r}
-cwlVersion(echo)  ## "v1.0"
-cwlClass(echo)    ## "CommandLineTool", can be ""
-baseCommand(echo) ## "echo"
-inputs(echo)      ## command line arguments and values
-outputs(echo)     ## the name of output results/files to be saved out
-                  ## to pass to later steps in pipeline
-arguments(echo)   ## command line arguments that pass by default, no
-                  ## need to assign values.
+Now the Rcwl version of `STARindex` is successfully loaded in to _R_
+and ready to use. 
+
+#### Indexing
+
+Before the alignment and QC in the aboved mentioned GALAXY pipeline,
+we will add an indexing step using the tool `STARindex`. The command
+line for indexing looks like this:
+
+```
+$ STAR --runMode genomeGenerate --runThreadN 4 --genomeDir STARindex 
+--genomeFastaFiles chr21.fa --sjdbGTFfile Homo_sapiens.GRCh37.75.21.gtf
 ```
 
-#### Test run
-The function `runCWL` is used to run the CWL object by invoking the
-python tool `cwltool`. The returned value is a list with the shell
-command executed, temporary output and logs. The output directory is
-the current folder by default, but it can be changed by setting
-`outdir` argument. All standard out and standard error stream can also
-be printed by setting `stderr = ""`.
-
-```{r}
-r1 <- runCWL(echo, outdir = tempdir())
-r1
-```
-
-First Let's check the output file to make sure the command was
-executed successfully.
+Using the `STARindex`, we can equivalently do the same indexing within
+_R_ which was internally passed as a cwl script. What we need to do is
+assign values for the input parameters, and execute the cwl script
+using `runCWL` function.
 
 ```{r}
-r1$output
-readLines(r1$output)
+inputs(STARindex)
+STARindex$genomeFastaFiles <- file.path(path, "chr21.fa")
+STARindex$sjdbGTFfile <- file.path(path, "Homo_sapiens.GRCh37.75.21.gtf")
+system.time(
+    runCWL(cwl = STARindex, outdir = file.path(path, "STARindex_output"), showLog = TRUE)
+    ) ## elapsed: 74.795S
+dir(file.path(path, "STARindex_output"), recursive = TRUE)
 ```
 
-Here is the actual command line code (genearted from running `runCWL`)
-that was executed by `cwltools`.
+Now that the output files are in the folder of "STARindex_output"
+under the temporary directory. And then these intermediate results are
+ready to pass to the next `Rcwl` tool for single cell read alignment. 
+
+#### Alignment
+
+To align single cell reads using `STAR`, it can be done directly in
+command line:
+
+```
+$ STAR --soloType CB_UMI_Simple --genomeDir STARindex_output/STARindex --soloCBwhitelist subset15_demo_barcode.txt --soloUMIlen 12 --readFilesIn subset15_chr21_pbmc_1k_v3_S1_L001_R2_001.fastq.gz,subset15_chr21_pbmc_1k_v3_S1_L002_R2_001.fastq.gz subset15_chr21_pbmc_1k_v3_S1_L001_R1_001.fastq.gz,subset15_chr21_pbmc_1k_v3_S1_L002_R1_001.fastq.gz --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --readFilesCommand gzcat --runThreadN 1
+```
+
+Now we can follow the previous example to load our Rcwl version of
+`STARsolo` and run the command in _R_.
 
 ```{r}
-r1$command
+cwlInstall("tl_STARsolo")  ## "tl_STARsolo"
+STARsolo
+inputs(STARsolo)
+
+cdna.fastq <- file.path(path, list.files(path, pattern = "_R2_"))
+cb.fastq <- file.path(path, list.files(path, pattern = "_R1_"))
+cblist <- file.path(path, "subset15_demo_barcode.txt")
+genomeDir <- file.path(path, "STARindex_output/STARindex")
+
+STARsolo$readFilesIn_cdna <- cdna.fastq
+STARsolo$readFilesIn_cb <- cb.fastq
+STARsolo$whiteList <- cblist
+STARsolo$genomeDir <- genomeDir ## ??
+
+runCWL(STARsolo, outdir = file.path(path, "STARsolo_output"), showLog = TRUE)  ## approximately 2 mins
+dir(file.path(path, "STARsolo_output"), recursive = TRUE)
+```     
+Now we have a folder generated in the temporary directory called
+"STARsolo_output". The results include ?? which can be passed into
+the next tool.
+
+#### `DropletUtils`
+
+To get a high quality count matrix we must apply the `DropletUtils`
+tool, which will produce a filtered dataset that is more
+representative of the Cell Ranger pipeline.
+
+```{r}       
+cwlInstall("tl_DropletUtils")
+
+inputs(DropletUtils)
+DropletUtils$dirname <- file.path(path, "STARsolo_output/Solo.out")
+DropletUtils$lower <- 100
+DropletUtils$df <- 5
+runCWL(DropletUtils, outdir = file.path(path, "dropletUtils_output"), showLog = TRUE)
+dir(file.path(path, "dropletUtils_output"))
 ```
 
-The log shows the details of how the `cwltool` works with CWL scripts.
-```{r}
-r1$log
-```
+Now that we get 2 output files: 
 
-Internally, the `runCWL` generates two scripts: the ".cwl"
-configuration file and the ".yml" file containing input parameter
-values. The location and prefix name of these two files are defined
-with the argument `prefix`, with the default value as
-`tempfile()`.   
-
-The `cwltool` parses the two scripts and translates them into shell
-command shown in `r1$command`. Since the output prameters are not
-defined in the `echo` object, so the output was returned to __stdout__
-by default with the filepath in `r1$output`.
-
-### Components
-#### Input Parameters
-1. Essential Input parameters
-
-When defining the input parameters, three arguments are usually
-needed: *id*, *type*, and *prefix*. The *id* is a name for the input
-parameter which could be used later to assign values for that
-parameter, The *type* can be string, int, long, float, and double,
-etc. The *prefix* is the command line prefix that can be in varied
-formats based on users' habit. More detail can be found at:
-<htps://www.commonwl.org/v1.0/CommandLineTool.html#CWLType>.
-
-Here is an example from the CWL user guide
-(<http://www.commonwl.org/user_guide/03-input/>). We defined the
-`echo` with different type of input parameters by `InputParam`, and
-the `stdout` option can be used to capture the standard output stream
-into a file:
-
-```{r}
-e1 <- InputParam(id = "flag", type = "boolean", prefix = "-f")
-e2 <- InputParam(id = "string", type = "string", prefix = "-s")
-e3 <- InputParam(id = "int", type = "int", prefix = "-i")
-e4 <- InputParam(id = "file", type = "File",
-                 prefix = "--file=", separate = FALSE)
-echoA <- cwlParam(baseCommand = "echo",
-                  inputs = InputParamList(e1, e2, e3, e4),
-                  stdout = "output.txt")
-echoA
-```
-
-Then let's assign values to the input parameters.
-```{r}
-echoA$flag <- TRUE
-echoA$string <- "Hello"
-echoA$int <- 1
-tmpfile <- tempfile()
-write("World", tmpfile)
-echoA$file <- tmpfile
-r2 <- runCWL(echoA, outdir = tempdir())
-r2$command
-```
-
-2. Array Inputs
-
-When one command line parameter takes multiple values, there are three
-different ways to define an array input.
+- The pdf file with 2 diagnostic figures: Barcode ranks, and empty droplets. Details for each diagnostic figures please refer to the [DropletUtils vignette](https://bioconductor.org/packages/release/bioc/vignettes/DropletUtils/inst/doc/DropletUtils.html)  
+- The `SingleCellExperiment` object which has filtered out unqualified cells.  
 
 ```{r}
-a1 <- InputParam(id = "A", type = "string[]", prefix = "-A")  ## most common, -A a b c
-a2 <- InputParam(id = "B",                                    ## -B=d, -B=e, -B=f
-                 type = InputArrayParam(items = "string",
-                                        prefix="-B=", separate = FALSE))
-a3 <- InputParam(id = "C", type = "string[]", prefix = "-C=", ## -C=g,h,i
-                 itemSeparator = ",", separate = FALSE) 
-echoB <- cwlParam(baseCommand = "echo",
-                 inputs = InputParamList(a1, a2, a3))
+#> Biobase::openPDF(file.path(path, "dropletUtils_output/diagnostics.pdf"))
+sce <- readRDS(file.path(path, "dropletUtils_output/sce_filtered.rds"))
+sce
 ```
+### scRNA-seq preprocessing pipeline
 
-We then set values for the three inputs and see how each of them print
-in the command line:
+Alternatively and more easily, we can also run the pipeline that was
+available in `RcwlPipelines` which has integrated the `STARsolo` and
+`DropletUtils` for a streamlined preprocessing analysis within _R_.
 
 ```{r}
-echoB$A <- echoB$B <- echoB$C <- letters[1:3]
-echoB
+cwlInstall("pl_STARsoloDropletUtils")
+inputs(STARsoloDropletUtils)
+STARsoloDropletUtils$fastq_cdna <- cdna.fastq
+STARsoloDropletUtils$fastq_cb <- cb.fastq
+STARsoloDropletUtils$genomeDir <- file.path(path, "STARindex_output/STARindex")
+STARsoloDropletUtils$whiteList <- cblist
+STARsoloDropletUtils$runThreadN <- 2
+runCWL(STARsoloDropletUtils, outdir = "STARsoloDropletUtils_output", showLog = TRUE)
 ```
 
-Now we can check whether the command behaves as we expected.
-```{r}
-r3 <- runCWL(echoB, outdir = tempdir())
-r3$command
-readLines(r3$output)
-```
-
-#### Output Parameters
-1. Capturing Output for passing in pipeline
-
-The outputs, similar to the inputs, is a list of output
-parameters. Three options, *id*, *type* and *glob*, are usually
-required to be defined. The *id* and *type* are similar to
-`InputParam`, and the *glob* option is used to define a pattern to
-find files relative to the output directory.
-
-Here is an example to unzip a compressed `gz` file. First, we generate
-a compressed R script file:
+Let's take a look at the output for this pipeline: 
 
 ```{r}
-zzfil <- file.path(tempdir(), "sample.R.gz")
-zz <- gzfile(zzfil, "w")  ## open for writing in text mode. Can use "open=rt" to "readLines()"
-cat("sample(1:10, 5)", file = zz, sep = "\n")    ## a string 
-close(zz)
+outputs(STARsoloDropletUtils)
 ```
 
-The command line to do this job looks like: 
-```
-$ gzip -d -c sample.R.gz 
-```
-
-We then define a `cwlParam` object to use "gzip" to uncompress an input file:
-```{r}
-z1 <- InputParam(id = "decomp", type = "boolean", prefix = "-d")
-z2 <- InputParam(id = "stdout", type = "boolean", prefix = "-c")
-z3 <- InputParam(id = "zfile", type = "File")
-ofile <- "sample.R"
-o1 <- OutputParam(id = "rfile", type = "File", glob = ofile)
-gz <- cwlParam(baseCommand = "gzip",
-               inputs = InputParamList(z1, z2, z3),
-               outputs = OutputParamList(o1),  ## this is to glob the stdout file into "output" folder. 
-                stdout = ofile)  ## "stdout" is to specify the stdout file. 
-```
-
-Now the `gz` object can be used to decompress the previously generated
-compressed file:
-
-```{r}
-gz$decomp <- TRUE   ## $ gzip -d
-gz$stdout <- TRUE   ## $ gzip -d -c
-gz$zfile <- zzfil   ## gzip -d -c sample.R.gz
-r4 <- runCWL(gz, outdir = tempdir())
-readLines(r4$output)
-## print(r4$command)
-```
-
-When building the cwl tool using `runCWL`, We can use `arguments`
-argument to include some parameters with default values so that when
-users use this tool, they don't need to assign values for all
-(especially some trivial) parameters.
-
-```{r}
-z1 <- InputParam(id = "zfile", type = "File")
-o1 <- OutputParam(id = "rfile", type = "File", glob = ofile)
-gz1 <- cwlParam(baseCommand = "gzip",
-               arguments = list("-d", "-c"),
-               inputs = InputParamList(z1),
-               outputs = OutputParamList(o1),
-               stdout = ofile)
-gz1
-gz1$zfile <- zzfil
-r4a <- runCWL(gz1, outdir = tempdir())
-r4a$output
-readLines(r4a$output)
-```
-
-To make it for general usage, we can define a pattern with javascript
-to *glob* the output, which requires `node` to be installed in your
-system PATH:
-
-```{r}
-pfile <- "$(inputs.zfile.path.split('/').slice(-1)[0].split('.').slice(0,-1).join('.'))"
-```
-
-Or we can directly use the CWL built-in file property, `nameroot`:
-```{r}
-pfile <- "$(inputs.zfile.nameroot)"
-o2 <- OutputParam(id = "rfile", type = "File", glob = pfile)
-req1 <- list(class = "InlineJavascriptRequirement")
-gz2 <- cwlParam(baseCommand = c("gzip", "-d", "-c"),
-               requirements = list(), ## assign list(req1) if node installed.
-               inputs = InputParamList(z1),
-               outputs = OutputParamList(o2),
-               stdout = pfile)
-gz2$zfile <- zzfil
-r4b <- runCWL(gz2, outdir = tempdir())
-```
-
-2. Array Outputs
-
-We can also capture multiple output files by defining
-a pattern in `glob`. In the following example, we are only extracting
-text files to our designated output folder in `runCWL(outdir="")`.
-
-```{r}
-a <- InputParam(id = "a", type = InputArrayParam(items = "string"))
-b <- OutputParam(id = "b", type = OutputArrayParam(items = "File"),
-                 glob = "*.txt")
-touch <- cwlParam(baseCommand = "touch",
-                  inputs = InputParamList(a),
-                  outputs = OutputParamList(b))
-touch$a <- c("a.txt", "b.gz", "c.txt")
-r5 <- runCWL(touch, outdir = tempdir())
-r5$output
-```
-
-### Run approaches
-#### Running Tools in parallel
-
-The CWL can also work in high performance clusters with batch-queuing
-system, such as SGE, PBS, SLURM and so on, using the _Bioconductor_
-package `BiocParallel`. Here is an example to submit jobs with
-"Multicore" and "SGE", separately:
-
-```{r, eval=FALSE}
-library(BiocParallel)
-demolist <- as.list(LETTERS[1:6])
-names(demolist) <- LETTERS[1:6]
-## submit with mutlicore
-res1 <- runCWLBatch(cwl = echo, outdir = tempdir(),
-                    inputList = list(content = demolist),
-                    BPPARAM = MulticoreParam(4))
-readLines(res1[[1]]$output)
-## submit with SGE
-res2 <- runCWLBatch(cwl = echo, outdir = tempdir(),
-                    inputList = list(content = demolist),
-                    BPPARAM = BatchtoolsParam(workers = 4, cluster = "sge",
-                                              resources = list(queue = "all.q")))
-```
-
-#### Web Application
-
-Here we build a tool with different types of input parameters, and
-then use `echo` to print them out:
-
-```{r}
-e1 <- InputParam(id = "flag", type = "boolean",
-                 prefix = "-f", doc = "boolean flag")
-e2 <- InputParam(id = "string", type = "string", prefix = "-s")
-e3 <- InputParam(id = "option", type = "string", prefix = "-o")
-e4 <- InputParam(id = "int", type = "int", prefix = "-i", default = 123)
-e5 <- InputParam(id = "file", type = "File",
-                 prefix = "--file=", separate = FALSE)
-e6 <- InputParam(id = "array", type = "string[]", prefix = "-A",
-                 doc = "separated by comma")  ## "doc" 
-webEcho <- cwlParam(baseCommand = "echo", id = "webEcho",
-                 label = "Test parameter types",
-                 inputs = InputParamList(e1, e2, e3, e4, e5, e6),
-                 stdout = "output.txt")
-webEcho
-```
-
-Some input parameters can be predefined in a list, which will be
-converted to selected options in the webapp. An `upload` parameter can
-be used to generate an upload interface for the file type option. If
-set as`FALSE`, the upload field will be text input (file path) instead
-of file input.
-
-```{r, eval=FALSE}
-library(shiny)
-inputs(webEcho)  ## define 2 options for the input parameter "option"
-inputList <- list(option = c("option1", "option2"))
-app <- cwlShiny(webEcho, inputList, upload = TRUE)
-runApp(app)
-```
-
-<div align="center">**Figure 6:**  Shiny webApp for `webEcho`. </div></br>
-
-### Wrap R functions
-
-`Rcwl` is also designed to wrap any _R_ function into a cwl tool and
-then use directly into a pipeline.
-
-```{r}
-anyfun <- function(x) x
-rtool <- cwlParam(baseCommand = anyfun,
-                  inputs = InputParamList(InputParam(id="anyinput", type = "string")))
-rtool$anyinput <- "abcd"  ## assign values for input parameter
-rtoolres <- runCWL(rtool) ## execute the CWL script
-readLines(rtoolres$output)  ## check results
-```
-
-### Build a simple DNASeq pipeline
-
-#### RcwlPipelines package
-
-We have collected all recipes (_R_ scripts)that build CWL tools and
-pipelines in a GitHub repository now
-(https://github.com/hubentu/RcwlRecipes), This repository is intended
-to be a community effort for bioinformatics tools and pipelines built
-with _Rcwl_ and CWL directly.
-
-Three core functions are defined for convenient usage of these recipes: 
-
-- `cwlUpdate`: sync the recipes.
-- `cwlSearch`: search tools or pipelines using keywords.
-- `cwlInstall`: source the R object of CWL tool or pipeline into R working environment.
-
-1. Indexing recipe scripts 
-
-The `cwlUpdate` function updates the recipe scripts from the GitHub
-repository and collects meta data to a local cache internally using
-the `BiocFileCache` package. By default the local cache will be
-created under your home directory. Here we use temporary directory as
-an example.
-
-```{r}
-tools <- cwlUpdate(cachePath = tempfile())
-tools
-bfcinfo(tools)  ## show a tibble list with all available tools. Use
-                ## "methods(class="BiocFileCache")" to see all
-                ## available functions for an "BiocFileCache" object.
-table(bfcinfo(tools)$Type) 
-data.frame(bfcinfo(tools)[1,])
-```
-
-2. Search by keyword 
-
-The function `cwlSearch` helps to search indexed recipes with
-keywords. In the following example, let's find the alignment tool
-using keywords "bwa" and "mem".
-
-```{r}
-tl <- cwlSearch(c("bwa", "mem"), tools)
-tl$rname
-```
-
-3. Load tools and pipelines
-
-The function `cwlInstall` “installs” the tools or pipelines
-to current environment using the name or the file path to the script.
-a
-```{r}
-cwlInstall(tl$rname)
-cwlInstall(tl$fpath)  ## equivalent
-bwa
-```
-
-#### Build a pipeline
-
-Piplines can be easily built using the available tools. Here we use
-the tools for mapping and marking duplicates to build a simple
-alignment pipeline. First, we need to check whether the required tools
-(bwa, samtools and picard markduplicates) are available in our
-repository.
-
-```{r}
-tls <- cwlSearch("bwa|sam2bam|sortBam|samtools_index|markdup", tools) %>%
-    dplyr::filter(Type == "tool") %>%
-    dplyr::select(rname, rpath, Command, Container)
-tls
-```
-
-Let's load all the tools into _R_ environment. 
-
-```{r}
-invisible(sapply(tls$rpath, cwlInstall))
-```
-
-Next, we can define the input parameters for the whole pjipeline. 
-
-```{r}
-p1 <- InputParam(id = "threads", type = "int")
-p2 <- InputParam(id = "RG", type = "string")
-p3 <- InputParam(id = "Ref", type = "File",
-                 secondaryFiles =
-                     c(".amb", ".ann", ".bwt", ".pac", ".sa"))
-p4 <- InputParam(id = "FQ1", type = "File")
-p5 <- InputParam(id = "FQ2", type = "File?")
-```
-
-Then we define the pipeline steps using the function `Step`. This
-function returns `stepParam` objects, which contain the internal
-relation with input and output between steps. In the following
-example, it defines the pipeline steps to process raw fastqs files
-into duplicates marked alignments.
-
-```{r}
-## bwa
-s1 <- Step(id = "bwa", run = bwa,
-           In = list(threads = "threads",
-                     RG = "RG",
-                     Ref = "Ref",
-                     FQ1 = "FQ1",
-                     FQ2 = "FQ2"))
-## sam to bam
-s2 <- Step(id = "sam2bam", run = sam2bam,
-           In = list(sam = "bwa/sam"))  ## the input is the output of "bwa"
-## sort bam
-s3 <- Step(id = "sortBam", run = sortBam,
-           In = list(bam = "sam2bam/bam"))
-## mark duplicates
-## s4 <- Step(id = "markdup", run = markdup,
-##            In = list(ibam = "sortBam/sbam",
-##                      obam = list(
-##                          valueFrom="$(inputs.ibam.nameroot).mdup.bam"),
-##                      matrix = list(
-##                          valueFrom="$(inputs.ibam.nameroot).markdup.txt")))
-## index bam
-s4 <- Step(id = "idxBam", run = samtools_index,
-           In = list(bam = "sortBam/sbam"))
-```
-
-Last, we define the outputs for the whole pipeline and connect all steps. 
-
-```{r}
-## req1 <- list(class = "StepInputExpressionRequirement")
-## req2 <- list(class = "InlineJavascriptRequirement")
-## outputs
-## o1 <- OutputParam(id = "Bam", type = "File", outputSource = "markdup/mBam")
-o1 <- OutputParam(id = "Idx", type = "File", outputSource = "idxBam/idx")
-## stepParam
-Align <- cwlStepParam(requirements = list(),
-                      inputs = InputParamList(p1, p2, p3, p4, p5),
-                      outputs = OutputParamList(o1))
-## build pipeline
-Align <- Align + s1 + s2 + s3 + s4
-```
-
-The pipeline is ready for use. We can plot the pipeline with
-`plotCWL` from the `Rcwl` package.
-
-```{r}
-plotCWL(Align)
-```
-<div align="center">**Figure 7:**  Visualization for the pipeline `Align`. </div></br>
-
-Now let's test the pipeline with some real data. 
-
-```{r, eval=FALSE}
-sysdir <- system.file(package="Bioc2020RCWL")
-ids <- c("normal", "tumor")
-fq1 <- list.files(file.path(sysdir, "vignettes", "extdata"), pattern="1.fq.gz", full.names = TRUE)
-fq2 <- list.files(file.path(sysdir, "vignettes", "extdata"), pattern="2.fq.gz", full.names = TRUE)
-fq1 <- as.list(fq1)
-fq2 <- as.list(fq2)
-rg <- as.list(paste("@RG",
-                    paste0("ID:", ids),
-                    paste0("SM:", ids), sep = "\\t"))
-names(fq1) <- names(fq2) <- names(rg) <- ids
-inputList <- list(RG = rg,
-                  FQ1 = fq1,
-                  FQ2 = fq2)
-paramList <- list(threads = 2,
-                  Ref = file.path(sysdir, "vignettes", "extdata", "ref.fa"))
-result <- runCWLBatch(cwl = Align, outdir = tempdir(), inputList,
-                      paramList, BPPARAM = MulticoreParam(2),
-                      stderr = "", cwlTemp=TRUE, docker = FALSE)
-```
-
-Check the results:
-```{r, eval=FALSE}
-dir(file.path(tempdir(), "normal"))
-```
-
-### Rcwl tutorial
-<https://hubentu.github.io/Rcwl>
+## todo:
+- explain the output globs. 
+- Explain the cwl files. (config, values)
+- test docker. 
