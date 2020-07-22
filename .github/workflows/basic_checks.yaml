@@ -2,7 +2,7 @@ on: [push]
 jobs:
   job1:
     runs-on: ubuntu-latest
-    container: hubentu/bioc2020rcwl:latest
+    container: liubuntu/bioc2020rcwl:latest
     steps:
       - uses: actions/checkout@v1
 
