@@ -197,7 +197,7 @@ and `cwlInstall`.
 The `cwlUpdate` syncs the current Rcwl recipes and return a
 `BiocFileCache` object which contains the most updated Rcwl recipes.
 
-```{r}
+```{r, suppressMessages=TRUE}
 library(Rcwl)
 library(RcwlPipelines)
 atls <- cwlUpdate()  ## sync the tools/pipelines
@@ -224,6 +224,8 @@ BiocFileCache tibble in columns of "rname", "rpath", "fpath",
 tls <- cwlSearch(c("STAR", "index"))
 data.frame(tls)
 ```
+
+##### `cwlInstall`
 
 The last core function is `cwlInstall` which sources the Rcwl script
 for the interested tool/pipeline into the _R_ working environment.
