@@ -9,10 +9,18 @@ home:
   title: "Bioc2020 Rcwl"
   type: inverse
 
-
 navbar:
+  left:
+  - text: Workshop
+    href: articles/Bioc2020RCWL.html
+  - text: Articles
+    menu:
+      - text: Bioc2020RCWL (usage)
+        href: articles/Bioc2020RCWL.html
+      - text: Bioc2020RCWL (developers)
+        href: articles/Bioc2020RCWL4devel.html
   right:
-   - icon: fa-github
-     href: https://github.com/liubuntu/Bioc2020Rcwl
+    - icon: fa-github
+      href: https://github.com/liubuntu/Bioc2020Rcwl
      
 

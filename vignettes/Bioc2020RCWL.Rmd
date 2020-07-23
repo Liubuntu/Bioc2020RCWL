@@ -10,6 +10,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding[utf8]{inputenc}
 ---
+
+```{r}
+knitr::opts_chunk$set(message = FALSE)
+```
+
 # Connecting Bioconductor to other bioinformatics tools using `Rcwl`
 
 ## Instructor(s) name(s) and contact information
@@ -96,7 +101,7 @@ System dependencies
 * Run the scRNA-seq QC tool `DropletUtils` in _R_
 * Run the scRNA-seq preprocessing pipeline which combines alignment and QC steps in _R_
 * Create a basic echo tool using `Rcwl` (developers only)
-* ?? Build a basic pipeline ??? using `RCWL` (developers only) 
+* Build a basic DNAseq pipeline using `RCWL` (developers only) 
 
 ## Introduction to CWL
 
@@ -193,13 +198,17 @@ user-specified directory, all within _R_.
 Here we show the usage of 3 core functions: `cwlUpdate`, `cwlSearch`
 and `cwlInstall`. 
 
-##### `cwlUpdate`
+- `cwlUpdate`
+
 The `cwlUpdate` syncs the current Rcwl recipes and return a
 `BiocFileCache` object which contains the most updated Rcwl recipes.
 
-```{r, suppressMessages=TRUE}
+```{r}
 library(Rcwl)
 library(RcwlPipelines)
+```
+
+```{r}
 atls <- cwlUpdate()  ## sync the tools/pipelines
 atls
 ```
@@ -213,7 +222,7 @@ bfcinfo(atls)
 table(bfcinfo(atls)$Type)
 ```
 
-##### `cwlSearch`
+- `cwlSearch`
 
 We can use keywords to search for any specific tools/pipelines of
 interest, which internally search the keywords against the
@@ -225,7 +234,7 @@ tls <- cwlSearch(c("STAR", "index"))
 data.frame(tls)
 ```
 
-##### `cwlInstall`
+- `cwlInstall`
 
 The last core function is `cwlInstall` which sources the Rcwl script
 for the interested tool/pipeline into the _R_ working environment.
@@ -240,7 +249,7 @@ outputs(STARindex)
 requirements(STARindex)
 ```
 
-Now the Rcwl version of `STARindex` is successfully loaded in to _R_
+Now the Rcwl version of `STARindex` is successfully loaded into _R_
 and ready to use. 
 
 #### Indexing
@@ -273,9 +282,9 @@ system.time(
 dir(file.path(outpath, "STARindex_output"), recursive = TRUE)
 ```
 
-Now that the output files are in the folder of "STARindex_output"
-under the temporary directory. And then these intermediate results are
-ready to pass to the next `Rcwl` tool for single cell read alignment. 
+Now that the output files are generated in the folder of
+"STARindex_output" under `outpath`. These results are ready to pass to
+the next tool for single cell read alignment.
 
 #### Alignment
 
@@ -311,9 +320,8 @@ runCWL(STARsolo, outdir = file.path(outpath, "STARsolo_output"), ,
        docker = "singularity", showLog = TRUE)  ## approximately 2 mins
 dir(file.path(outpath, "STARsolo_output"), recursive = TRUE)
 ```     
-Now we have a folder generated in the temporary directory called
-"STARsolo_output". The results include ?? which can be passed into
-the next tool.
+Now we have all files generated in the "STARsolo_output" folder under
+`outpath`, which can be passed into the next tool.
 
 #### `DropletUtils`
 
@@ -369,7 +377,7 @@ dir(file.path(outpath, "scpipeline_output"), recursive = TRUE)
 outputs(STARsoloDropletUtils)
 ```
 
-## todo:
+### todo:
 - explain the output globs. 
 - Explain the cwl files. (config, values)
 - test docker. 

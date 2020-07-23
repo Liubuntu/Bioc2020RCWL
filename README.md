@@ -28,12 +28,35 @@ matrix and removing empty droplets. This pipeline demonstrates the
 typical use case of our packages. More details for usage and examples
 are available on Rcwl website: https://hubentu.github.io/Rcwl/.
 
+## Docker instructions:
+
+First, we need to initiate the docker. The follow command will mount
+the local current directory (`$(pwd)`) to the docker container
+(`/home/rstudio/outdir`), which is required to store the output files
+from our tutorial. 
+
 ```
 docker pull liubuntu/bioc2020rcwl:latest
-docker run -e PASSWORD=bioconductor -p 8787:8787 -d --privileged liubuntu/bioc2020rcwl
-# Open http://localhost:8787 and login with username "rstudio" and password "bioconductor"
-# Run browseVignettes(package = "Bioc2020RCWL")
-# Click on one of the links, “HTML”, “source”, “R code”. In case of “The requested page was not found” error, add help/ to the URL right after the hostname: "http://localhost:8787/help/library/Bioc2020RCWL/doc/Bioc2020RCWL.html" 
-docker ps -a # List all running containers
-docker stop <CONTAINER ID> # or, <NAMES> - Stop a container
+docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged bioc2020rcwl
 ```
+
+Then open http://localhost:8787 in your browser and login with
+username "rstudio" and password "bioconductor". Within rstudio, you
+can open the workshop script `vignettes/Bioc2020RCWL.Rmd`.
+
+You can also look at the html file by: 
+```
+browseVignettes(package = "Bioc2020RCWL")
+```
+
+Click on one of the links, “HTML”, “source”, “R code”. In case of “The
+requested page was not found” error, add "help/" to the URL right
+after the hostname:
+"http://localhost:8787/help/library/Bioc2020RCWL/doc/Bioc2020RCWL.html"
+
+When you are done with the workshop, stop you docker: 
+```
+docker ps -a # List all running containers 
+docker stop <CONTAINER ID> # or, <NAMES> - Stop a container 
+```
+

@@ -10,6 +10,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding[utf8]{inputenc}
 ---
+
+```{r}
+knitr::opts_chunk$set(message = FALSE) 
+```
+
 # Connecting Bioconductor to other bioinformatics tools using `Rcwl`
 
 ## Instructor(s) name(s) and contact information
@@ -66,7 +71,7 @@ Common Workflow Language (CWL). The `Rcwl` and `RcwlPipelines`
 packages are available in Bioc 3.11 and R >= 3.6. You can install them
 by the `BiocManager` package.
 
-```{r, suppressMessages=TRUE}
+```{r}
 if (!requireNamespace("RcwlPipelines", quietly = TRUE))
 	BiocManager::install(c("Rcwl", "RcwlPipelines"))
 library(Rcwl)
