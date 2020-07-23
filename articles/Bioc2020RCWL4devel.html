@@ -44,16 +44,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../articles/Bioc2020RCWL.html">Get started</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/Bioc2020RCWL.html">Workshop</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -63,7 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Bioc2020RCWL4devel.html">UNKNOWN TITLE</a>
+      <a href="../articles/Bioc2020RCWL.html">Bioc2020RCWL (usage)</a>
+    </li>
+    <li>
+      <a href="../articles/Bioc2020RCWL4devel.html">Bioc2020RCWL (developers)</a>
     </li>
   </ul>
 </li>
@@ -99,6 +93,7 @@
 
     
     
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">message</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <div id="connecting-bioconductor-to-other-bioinformatics-tools-using-rcwl" class="section level1">
 <h1 class="hasAnchor">
 <a href="#connecting-bioconductor-to-other-bioinformatics-tools-using-rcwl" class="anchor"></a>Connecting Bioconductor to other bioinformatics tools using <code>Rcwl</code>
@@ -184,40 +179,10 @@
 <h4 class="hasAnchor">
 <a href="#rcwl-setup" class="anchor"></a>Rcwl setup</h4>
 <p>The <code>Rcwl</code> package is aimed at a simple and user-friendly way to manage command line tools and build data analysis pipelines in R using Common Workflow Language (CWL). The <code>Rcwl</code> and <code>RcwlPipelines</code> packages are available in Bioc 3.11 and R &gt;= 3.6. You can install them by the <code>BiocManager</code> package.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"RcwlPipelines"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"RcwlPipelines"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
     <span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Rcwl"</span>, <span class="st">"RcwlPipelines"</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcwl</span>)</pre></body></html></div>
-<pre><code>## Loading required package: yaml</code></pre>
-<pre><code>## Loading required package: S4Vectors</code></pre>
-<pre><code>## Loading required package: stats4</code></pre>
-<pre><code>## Loading required package: BiocGenerics</code></pre>
-<pre><code>## Loading required package: parallel</code></pre>
-<pre><code>## 
-## Attaching package: 'BiocGenerics'</code></pre>
-<pre><code>## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, sd, var, xtabs</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-##     union, unique, unsplit, which.max, which.min</code></pre>
-<pre><code>## 
-## Attaching package: 'S4Vectors'</code></pre>
-<pre><code>## The following object is masked from 'package:base':
-## 
-##     expand.grid</code></pre>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RcwlPipelines</span>)</pre></body></html></div>
-<pre><code>## Loading required package: BiocFileCache</code></pre>
-<pre><code>## Loading required package: dbplyr</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcwl</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RcwlPipelines</span>)</pre></body></html></div>
 </div>
 <div id="system-requirements" class="section level4">
 <h4 class="hasAnchor">
@@ -245,11 +210,11 @@
 <a href="#hello-world" class="anchor"></a>Hello world</h4>
 <p>The main class and constructor function is <code>cwlParam</code>, which wraps a command line tool and its parameters in a <code>cwlParam</code> object. Let’s start with a simple example, <code>echo hello world</code>.</p>
 <p>First, we load the package and then define the input parameter for “echo”, a string without a prefix. Just an <code>id</code> option is required.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">input1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"sth"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">input1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"sth"</span>)</pre></body></html></div>
 <p>Second, we create a <code>cwlParam</code> object with <code>baseCommand</code> for the command to execute and <code>InputParamList</code> for the input parameters.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">echo</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="st">"echo"</span>, <span class="kw">inputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">InputParamList</a></span>(<span class="no">input1</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">echo</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="st">"echo"</span>, <span class="kw">inputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">InputParamList</a></span>(<span class="no">input1</span>))</pre></body></html></div>
 <p>Now we have a command object to run. Let’s send a string “Hello World!” to the object. Without defining the outputs, it will stream standard output to a temporary file by default.</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">echo</span>$<span class="no">sth</span> <span class="kw">&lt;-</span> <span class="st">"Hello World!"</span>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">echo</span>$<span class="no">sth</span> <span class="kw">&lt;-</span> <span class="st">"Hello World!"</span>
 <span class="no">echo</span></pre></body></html></div>
 <pre><code>## class: cwlParam 
 ##  cwlClass: CommandLineTool 
@@ -261,57 +226,56 @@
 ## output:
 ##   type: stdout</code></pre>
 <p>We also defined some convenient accessor function for the <code>cwlParam</code> object.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlVersion</a></span>(<span class="no">echo</span>)  <span class="co">## "v1.0"</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlVersion</a></span>(<span class="no">echo</span>)  <span class="co">## "v1.0"</span></pre></body></html></div>
 <pre><code>## [1] "v1.0"</code></pre>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlClass</a></span>(<span class="no">echo</span>)    <span class="co">## "CommandLineTool", can be ""</span></pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlClass</a></span>(<span class="no">echo</span>)    <span class="co">## "CommandLineTool", can be ""</span></pre></body></html></div>
 <pre><code>## [1] "CommandLineTool"</code></pre>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">baseCommand</a></span>(<span class="no">echo</span>) <span class="co">## "echo"</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">baseCommand</a></span>(<span class="no">echo</span>) <span class="co">## "echo"</span></pre></body></html></div>
 <pre><code>## [1] "echo"</code></pre>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">echo</span>)      <span class="co">## command line arguments and values</span></pre></body></html></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">echo</span>)      <span class="co">## command line arguments and values</span></pre></body></html></div>
 <pre><code>## inputs:
 ##   sth (string):  Hello World!</code></pre>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">outputs</a></span>(<span class="no">echo</span>)     <span class="co">## the name of output results/files to be saved out</span></pre></body></html></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">outputs</a></span>(<span class="no">echo</span>)     <span class="co">## the name of output results/files to be saved out</span></pre></body></html></div>
 <pre><code>## outputs:
 ## output:
 ##   type: stdout</code></pre>
-<div class="sourceCode" id="cb30"><html><body><pre class="r">                  <span class="co">## to pass to later steps in pipeline</span>
+<div class="sourceCode" id="cb17"><html><body><pre class="r">                  <span class="co">## to pass to later steps in pipeline</span>
 <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">arguments</a></span>(<span class="no">echo</span>)   <span class="co">## command line arguments that pass by default, no</span></pre></body></html></div>
 <pre><code>## list()</code></pre>
-<div class="sourceCode" id="cb32"><html><body><pre class="r">                  ## need to assign values.</pre></body></html></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r">                  ## need to assign values.</pre></body></html></div>
 </div>
 <div id="test-run" class="section level4">
 <h4 class="hasAnchor">
 <a href="#test-run" class="anchor"></a>Test run</h4>
 <p>The function <code>runCWL</code> is used to run the CWL object by invoking the python tool <code>cwltool</code>. The returned value is a list with the shell command executed, temporary output and logs. The output directory is the current folder by default, but it can be changed by setting <code>outdir</code> argument. All standard out and standard error stream can also be printed by setting <code>stderr = ""</code>.</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="no">r1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echo</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="no">r1</span></pre></body></html></div>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">r1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echo</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="no">r1</span></pre></body></html></div>
 <pre><code>## List of length 3
 ## names(3): command output logs</code></pre>
 <p>First Let’s check the output file to make sure the command was executed successfully.</p>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">output</span></pre></body></html></div>
-<pre><code>## [1] "/tmp/Rtmp4iOAuf/80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900"</code></pre>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r1</span>$<span class="no">output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">output</span></pre></body></html></div>
+<pre><code>## [1] "/tmp/Rtmp1TJgES/3838cb2f2856e1ed34820e16f8f7f65d18453197"</code></pre>
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r1</span>$<span class="no">output</span>)</pre></body></html></div>
 <pre><code>## [1] "Hello World!"</code></pre>
 <p>Here is the actual command line code (genearted from running <code>runCWL</code>) that was executed by <code>cwltools</code>.</p>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">command</span></pre></body></html></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file4396379b1d6.cwl] /tmp/92qs6_h5$ echo \\"     
-## [2] "    'Hello World!' &gt; /tmp/92qs6_h5/80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900"</code></pre>
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">command</span></pre></body></html></div>
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file43a4b69a9f4.cwl] /tmp/fg35z90t$ echo \\"     
+## [2] "    'Hello World!' &gt; /tmp/fg35z90t/3838cb2f2856e1ed34820e16f8f7f65d18453197"</code></pre>
 <p>The log shows the details of how the <code>cwltool</code> works with CWL scripts.</p>
-<div class="sourceCode" id="cb43"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">log</span></pre></body></html></div>
-<pre><code>##  [1] "\033[1;30mINFO\033[0m /usr/local/bin/cwltool 3.0.20200710214758"                                                     
-##  [2] "\033[1;30mINFO\033[0m Resolved '/tmp/Rtmp4iOAuf/file4396379b1d6.cwl' to 'file:///tmp/Rtmp4iOAuf/file4396379b1d6.cwl'"
-##  [3] "\033[1;30mINFO\033[0m [job file4396379b1d6.cwl] /tmp/92qs6_h5$ echo \\"                                              
-##  [4] "    'Hello World!' &gt; /tmp/92qs6_h5/80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900"                                         
-##  [5] "\033[1;30mINFO\033[0m [job file4396379b1d6.cwl] completed success"                                                   
+<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">r1</span>$<span class="no">log</span></pre></body></html></div>
+<pre><code>##  [1] "\033[1;30mINFO\033[0m /usr/local/bin/cwltool 3.0.20200720165847"                                                     
+##  [2] "\033[1;30mINFO\033[0m Resolved '/tmp/Rtmp1TJgES/file43a4b69a9f4.cwl' to 'file:///tmp/Rtmp1TJgES/file43a4b69a9f4.cwl'"
+##  [3] "\033[1;30mINFO\033[0m [job file43a4b69a9f4.cwl] /tmp/fg35z90t$ echo \\"                                              
+##  [4] "    'Hello World!' &gt; /tmp/fg35z90t/3838cb2f2856e1ed34820e16f8f7f65d18453197"                                         
+##  [5] "\033[1;30mINFO\033[0m [job file43a4b69a9f4.cwl] completed success"                                                   
 ##  [6] "{"                                                                                                                   
 ##  [7] "    \"output\": {"                                                                                                   
-##  [8] "        \"location\": \"file:///tmp/Rtmp4iOAuf/80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900\","                          
-##  [9] "        \"basename\": \"80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900\","                                                 
+##  [8] "        \"location\": \"file:///tmp/Rtmp1TJgES/3838cb2f2856e1ed34820e16f8f7f65d18453197\","                          
+##  [9] "        \"basename\": \"3838cb2f2856e1ed34820e16f8f7f65d18453197\","                                                 
 ## [10] "        \"class\": \"File\","                                                                                        
 ## [11] "        \"checksum\": \"sha1$a0b65939670bc2c010f4d5d6a0b3e4e4590fb92b\","                                            
 ## [12] "        \"size\": 13,"                                                                                               
-## [13] "        \"path\": \"/tmp/Rtmp4iOAuf/80e0c7e63e89fc6ea94d061de8e1cb1bf4f1e900\""                                      
+## [13] "        \"path\": \"/tmp/Rtmp1TJgES/3838cb2f2856e1ed34820e16f8f7f65d18453197\""                                      
 ## [14] "    }"                                                                                                               
 ## [15] "}"                                                                                                                   
 ## [16] "\033[1;30mINFO\033[0m Final process status is success"</code></pre>
@@ -330,7 +294,7 @@
 </ol>
 <p>When defining the input parameters, three arguments are usually needed: <em>id</em>, <em>type</em>, and <em>prefix</em>. The <em>id</em> is a name for the input parameter which could be used later to assign values for that parameter, The <em>type</em> can be string, int, long, float, and double, etc. The <em>prefix</em> is the command line prefix that can be in varied formats based on users’ habit. More detail can be found at: &lt;htps://www.commonwl.org/v1.0/CommandLineTool.html#CWLType&gt;.</p>
 <p>Here is an example from the CWL user guide (<a href="http://www.commonwl.org/user_guide/03-input/" class="uri">http://www.commonwl.org/user_guide/03-input/</a>). We defined the <code>echo</code> with different type of input parameters by <code>InputParam</code>, and the <code>stdout</code> option can be used to capture the standard output stream into a file:</p>
-<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="no">e1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"flag"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-f"</span>)
+<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="no">e1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"flag"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-f"</span>)
 <span class="no">e2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"string"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-s"</span>)
 <span class="no">e3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"int"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"int"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-i"</span>)
 <span class="no">e4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"file"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>,
@@ -353,27 +317,26 @@
 ##   type: stdout
 ## stdout: output.txt</code></pre>
 <p>Then let’s assign values to the input parameters.</p>
-<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="no">echoA</span>$<span class="no">flag</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>
+<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="no">echoA</span>$<span class="no">flag</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>
 <span class="no">echoA</span>$<span class="no">string</span> <span class="kw">&lt;-</span> <span class="st">"Hello"</span>
 <span class="no">echoA</span>$<span class="no">int</span> <span class="kw">&lt;-</span> <span class="fl">1</span>
 <span class="no">tmpfile</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
 <span class="fu"><a href="https://rdrr.io/r/base/write.html">write</a></span>(<span class="st">"World"</span>, <span class="no">tmpfile</span>)
 <span class="no">echoA</span>$<span class="no">file</span> <span class="kw">&lt;-</span> <span class="no">tmpfile</span>
-<span class="no">r2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echoA</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="no">r2</span>$<span class="no">command</span></pre></body></html></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file4397799b490.cwl] /tmp/lgt17h3h$ echo \\"                
-## [2] "    --file=/tmp/tmp8x5c_1v0/stg7bff76a3-1d5a-4bad-9b33-fde07c9be26d/file43949805b77 \\"
+<span class="no">r2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echoA</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="no">r2</span>$<span class="no">command</span></pre></body></html></div>
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file43a107559ac.cwl] /tmp/kn2chi3y$ echo \\"                
+## [2] "    --file=/tmp/tmpzxmnxark/stg6735a5ef-6692-4519-8d44-157336a37b4a/file43a6a152770 \\"
 ## [3] "    -f \\"                                                                             
 ## [4] "    -i \\"                                                                             
 ## [5] "    1 \\"                                                                              
 ## [6] "    -s \\"                                                                             
-## [7] "    Hello &gt; /tmp/lgt17h3h/output.txt"</code></pre>
+## [7] "    Hello &gt; /tmp/kn2chi3y/output.txt"</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Array Inputs</li>
 </ol>
 <p>When one command line parameter takes multiple values, there are three different ways to define an array input.</p>
-<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="no">a1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"A"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string[]"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-A"</span>)  <span class="co">## most common, -A a b c</span>
+<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">a1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"A"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string[]"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-A"</span>)  <span class="co">## most common, -A a b c</span>
 <span class="no">a2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"B"</span>,                                    <span class="co">## -B=d, -B=e, -B=f</span>
                  <span class="kw">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputArrayParam.html">InputArrayParam</a></span>(<span class="kw">items</span> <span class="kw">=</span> <span class="st">"string"</span>,
                                         <span class="kw">prefix</span><span class="kw">=</span><span class="st">"-B="</span>, <span class="kw">separate</span> <span class="kw">=</span> <span class="fl">FALSE</span>))
@@ -382,7 +345,7 @@
 <span class="no">echoB</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="st">"echo"</span>,
                  <span class="kw">inputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">InputParamList</a></span>(<span class="no">a1</span>, <span class="no">a2</span>, <span class="no">a3</span>))</pre></body></html></div>
 <p>We then set values for the three inputs and see how each of them print in the command line:</p>
-<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="no">echoB</span>$<span class="no">A</span> <span class="kw">&lt;-</span> <span class="no">echoB</span>$<span class="no">B</span> <span class="kw">&lt;-</span> <span class="no">echoB</span>$<span class="no">C</span> <span class="kw">&lt;-</span> <span class="no">letters</span>[<span class="fl">1</span>:<span class="fl">3</span>]
+<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="no">echoB</span>$<span class="no">A</span> <span class="kw">&lt;-</span> <span class="no">echoB</span>$<span class="no">B</span> <span class="kw">&lt;-</span> <span class="no">echoB</span>$<span class="no">C</span> <span class="kw">&lt;-</span> <span class="no">letters</span>[<span class="fl">1</span>:<span class="fl">3</span>]
 <span class="no">echoB</span></pre></body></html></div>
 <pre><code>## class: cwlParam 
 ##  cwlClass: CommandLineTool 
@@ -398,10 +361,9 @@
 ## output:
 ##   type: stdout</code></pre>
 <p>Now we can check whether the command behaves as we expected.</p>
-<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">r3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echoB</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="no">r3</span>$<span class="no">command</span></pre></body></html></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file43979ffd802.cwl] /tmp/lqi4_wn2$ echo \\"
+<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">r3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">echoB</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="no">r3</span>$<span class="no">command</span></pre></body></html></div>
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file43a12e73ba0.cwl] /tmp/vyc_r58s$ echo \\"
 ## [2] "    -A \\"                                                             
 ## [3] "    a \\"                                                              
 ## [4] "    b \\"                                                              
@@ -409,8 +371,8 @@
 ## [6] "    -B=a \\"                                                           
 ## [7] "    -B=b \\"                                                           
 ## [8] "    -B=c \\"                                                           
-## [9] "    -C=a,b,c &gt; /tmp/lqi4_wn2/205ca6e4695ef923a8b4cadd6af61d39a757099b"</code></pre>
-<div class="sourceCode" id="cb58"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r3</span>$<span class="no">output</span>)</pre></body></html></div>
+## [9] "    -C=a,b,c &gt; /tmp/vyc_r58s/dcf21eff82c63166a3e94564480e888811677a72"</code></pre>
+<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r3</span>$<span class="no">output</span>)</pre></body></html></div>
 <pre><code>## [1] "-A a b c -B=a -B=b -B=c -C=a,b,c"</code></pre>
 </div>
 <div id="output-parameters" class="section level4">
@@ -421,14 +383,14 @@
 </ol>
 <p>The outputs, similar to the inputs, is a list of output parameters. Three options, <em>id</em>, <em>type</em> and <em>glob</em>, are usually required to be defined. The <em>id</em> and <em>type</em> are similar to <code>InputParam</code>, and the <em>glob</em> option is used to define a pattern to find files relative to the output directory.</p>
 <p>Here is an example to unzip a compressed <code>gz</code> file. First, we generate a compressed R script file:</p>
-<div class="sourceCode" id="cb60"><html><body><pre class="r"><span class="no">zzfil</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"sample.R.gz"</span>)
+<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">zzfil</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"sample.R.gz"</span>)
 <span class="no">zz</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/connections.html">gzfile</a></span>(<span class="no">zzfil</span>, <span class="st">"w"</span>)  <span class="co">## open for writing in text mode. Can use "open=rt" to "readLines()"</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"sample(1:10, 5)"</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="no">zz</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">"\n"</span>)    <span class="co">## a string </span>
 <span class="fu"><a href="https://rdrr.io/r/base/connections.html">close</a></span>(<span class="no">zz</span>)</pre></body></html></div>
 <p>The command line to do this job looks like:</p>
 <pre><code>$ gzip -d -c sample.R.gz </code></pre>
 <p>We then define a <code>cwlParam</code> object to use “gzip” to uncompress an input file:</p>
-<div class="sourceCode" id="cb62"><html><body><pre class="r"><span class="no">z1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"decomp"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-d"</span>)
+<div class="sourceCode" id="cb43"><html><body><pre class="r"><span class="no">z1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"decomp"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-d"</span>)
 <span class="no">z2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"stdout"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-c"</span>)
 <span class="no">z3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"zfile"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>)
 <span class="no">ofile</span> <span class="kw">&lt;-</span> <span class="st">"sample.R"</span>
@@ -438,16 +400,15 @@
                <span class="kw">outputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">OutputParamList</a></span>(<span class="no">o1</span>),  <span class="co">## this is to glob the stdout file into "output" folder. </span>
                 <span class="kw">stdout</span> <span class="kw">=</span> <span class="no">ofile</span>)  <span class="co">## "stdout" is to specify the stdout file. </span></pre></body></html></div>
 <p>Now the <code>gz</code> object can be used to decompress the previously generated compressed file:</p>
-<div class="sourceCode" id="cb63"><html><body><pre class="r"><span class="no">gz</span>$<span class="no">decomp</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>   <span class="co">## $ gzip -d</span>
+<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="no">gz</span>$<span class="no">decomp</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>   <span class="co">## $ gzip -d</span>
 <span class="no">gz</span>$<span class="no">stdout</span> <span class="kw">&lt;-</span> <span class="fl">TRUE</span>   <span class="co">## $ gzip -d -c</span>
 <span class="no">gz</span>$<span class="no">zfile</span> <span class="kw">&lt;-</span> <span class="no">zzfil</span>   <span class="co">## gzip -d -c sample.R.gz</span>
-<span class="no">r4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">gz</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r4</span>$<span class="no">output</span>)</pre></body></html></div>
+<span class="no">r4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">gz</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r4</span>$<span class="no">output</span>)</pre></body></html></div>
 <pre><code>## [1] "sample(1:10, 5)"</code></pre>
-<div class="sourceCode" id="cb67"><html><body><pre class="r">## print(r4$command)</pre></body></html></div>
+<div class="sourceCode" id="cb46"><html><body><pre class="r">## print(r4$command)</pre></body></html></div>
 <p>When building the cwl tool using <code>runCWL</code>, We can use <code>arguments</code> argument to include some parameters with default values so that when users use this tool, they don’t need to assign values for all (especially some trivial) parameters.</p>
-<div class="sourceCode" id="cb68"><html><body><pre class="r"><span class="no">z1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"zfile"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>)
+<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="no">z1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"zfile"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>)
 <span class="no">o1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParam.html">OutputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"rfile"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>, <span class="kw">glob</span> <span class="kw">=</span> <span class="no">ofile</span>)
 <span class="no">gz1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="st">"gzip"</span>,
                <span class="kw">arguments</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"-d"</span>, <span class="st">"-c"</span>),
@@ -468,17 +429,16 @@
 ##   outputBinding:
 ##     glob: sample.R
 ## stdout: sample.R</code></pre>
-<div class="sourceCode" id="cb70"><html><body><pre class="r"><span class="no">gz1</span>$<span class="no">zfile</span> <span class="kw">&lt;-</span> <span class="no">zzfil</span>
-<span class="no">r4a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">gz1</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb72"><html><body><pre class="r"><span class="no">r4a</span>$<span class="no">output</span></pre></body></html></div>
-<pre><code>## [1] "/tmp/Rtmp4iOAuf/sample.R"</code></pre>
-<div class="sourceCode" id="cb74"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r4a</span>$<span class="no">output</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="no">gz1</span>$<span class="no">zfile</span> <span class="kw">&lt;-</span> <span class="no">zzfil</span>
+<span class="no">r4a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">gz1</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="no">r4a</span>$<span class="no">output</span></pre></body></html></div>
+<pre><code>## [1] "/tmp/Rtmp1TJgES/sample.R"</code></pre>
+<div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">r4a</span>$<span class="no">output</span>)</pre></body></html></div>
 <pre><code>## [1] "sample(1:10, 5)"</code></pre>
 <p>To make it for general usage, we can define a pattern with javascript to <em>glob</em> the output, which requires <code>node</code> to be installed in your system PATH:</p>
-<div class="sourceCode" id="cb76"><html><body><pre class="r"><span class="no">pfile</span> <span class="kw">&lt;-</span> <span class="st">"$(inputs.zfile.path.split('/').slice(-1)[0].split('.').slice(0,-1).join('.'))"</span></pre></body></html></div>
+<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="no">pfile</span> <span class="kw">&lt;-</span> <span class="st">"$(inputs.zfile.path.split('/').slice(-1)[0].split('.').slice(0,-1).join('.'))"</span></pre></body></html></div>
 <p>Or we can directly use the CWL built-in file property, <code>nameroot</code>:</p>
-<div class="sourceCode" id="cb77"><html><body><pre class="r"><span class="no">pfile</span> <span class="kw">&lt;-</span> <span class="st">"$(inputs.zfile.nameroot)"</span>
+<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">pfile</span> <span class="kw">&lt;-</span> <span class="st">"$(inputs.zfile.nameroot)"</span>
 <span class="no">o2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParam.html">OutputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"rfile"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>, <span class="kw">glob</span> <span class="kw">=</span> <span class="no">pfile</span>)
 <span class="no">req1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">class</span> <span class="kw">=</span> <span class="st">"InlineJavascriptRequirement"</span>)
 <span class="no">gz2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"gzip"</span>, <span class="st">"-d"</span>, <span class="st">"-c"</span>),
@@ -488,22 +448,20 @@
                <span class="kw">stdout</span> <span class="kw">=</span> <span class="no">pfile</span>)
 <span class="no">gz2</span>$<span class="no">zfile</span> <span class="kw">&lt;-</span> <span class="no">zzfil</span>
 <span class="no">r4b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">gz2</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Array Outputs</li>
 </ol>
 <p>We can also capture multiple output files by defining a pattern in <code>glob</code>. In the following example, we are only extracting text files to our designated output folder in <code><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL(outdir="")</a></code>.</p>
-<div class="sourceCode" id="cb79"><html><body><pre class="r"><span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"a"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputArrayParam.html">InputArrayParam</a></span>(<span class="kw">items</span> <span class="kw">=</span> <span class="st">"string"</span>))
+<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"a"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputArrayParam.html">InputArrayParam</a></span>(<span class="kw">items</span> <span class="kw">=</span> <span class="st">"string"</span>))
 <span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParam.html">OutputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"b"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputArrayParam.html">OutputArrayParam</a></span>(<span class="kw">items</span> <span class="kw">=</span> <span class="st">"File"</span>),
                  <span class="kw">glob</span> <span class="kw">=</span> <span class="st">"*.txt"</span>)
 <span class="no">touch</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="st">"touch"</span>,
                   <span class="kw">inputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">InputParamList</a></span>(<span class="no">a</span>),
                   <span class="kw">outputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">OutputParamList</a></span>(<span class="no">b</span>))
 <span class="no">touch</span>$<span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"a.txt"</span>, <span class="st">"b.gz"</span>, <span class="st">"c.txt"</span>)
-<span class="no">r5</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">touch</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())</pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb81"><html><body><pre class="r"><span class="no">r5</span>$<span class="no">output</span></pre></body></html></div>
-<pre><code>## [1] "/tmp/Rtmp4iOAuf/a.txt" "/tmp/Rtmp4iOAuf/c.txt"</code></pre>
+<span class="no">r5</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">touch</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>())
+<span class="no">r5</span>$<span class="no">output</span></pre></body></html></div>
+<pre><code>## [1] "/tmp/Rtmp1TJgES/a.txt" "/tmp/Rtmp1TJgES/c.txt"</code></pre>
 </div>
 </div>
 <div id="run-approaches" class="section level3">
@@ -513,7 +471,7 @@
 <h4 class="hasAnchor">
 <a href="#running-tools-in-parallel" class="anchor"></a>Running Tools in parallel</h4>
 <p>The CWL can also work in high performance clusters with batch-queuing system, such as SGE, PBS, SLURM and so on, using the <em>Bioconductor</em> package <code>BiocParallel</code>. Here is an example to submit jobs with “Multicore” and “SGE”, separately:</p>
-<div class="sourceCode" id="cb83"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">BiocParallel</span>)
+<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">BiocParallel</span>)
 <span class="no">demolist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="no">LETTERS</span>[<span class="fl">1</span>:<span class="fl">6</span>])
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">demolist</span>) <span class="kw">&lt;-</span> <span class="no">LETTERS</span>[<span class="fl">1</span>:<span class="fl">6</span>]
 <span class="co">## submit with mutlicore</span>
@@ -531,7 +489,7 @@
 <h4 class="hasAnchor">
 <a href="#web-application" class="anchor"></a>Web Application</h4>
 <p>Here we build a tool with different types of input parameters, and then use <code>echo</code> to print them out:</p>
-<div class="sourceCode" id="cb84"><html><body><pre class="r"><span class="no">e1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"flag"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>,
+<div class="sourceCode" id="cb58"><html><body><pre class="r"><span class="no">e1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"flag"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"boolean"</span>,
                  <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-f"</span>, <span class="kw">doc</span> <span class="kw">=</span> <span class="st">"boolean flag"</span>)
 <span class="no">e2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"string"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-s"</span>)
 <span class="no">e3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"option"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string"</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"-o"</span>)
@@ -561,12 +519,12 @@
 ##   type: stdout
 ## stdout: output.txt</code></pre>
 <p>Some input parameters can be predefined in a list, which will be converted to selected options in the webapp. An <code>upload</code> parameter can be used to generate an upload interface for the file type option. If set as<code>FALSE</code>, the upload field will be text input (file path) instead of file input.</p>
-<div class="sourceCode" id="cb86"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
+<div class="sourceCode" id="cb60"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">webEcho</span>)  <span class="co">## define 2 options for the input parameter "option"</span>
 <span class="no">inputList</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">option</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"option1"</span>, <span class="st">"option2"</span>))
 <span class="no">app</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlShiny.html">cwlShiny</a></span>(<span class="no">webEcho</span>, <span class="no">inputList</span>, <span class="kw">upload</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html">runApp</a></span>(<span class="no">app</span>)</pre></body></html></div>
-<img src="../../../../tmp/RtmpL7HZxw/temp_libpath3922ddce5c8/Bioc2020RCWL/vignettes/cwlShiny.png" title="fig:" alt="shinyApp"><div align="center">
+<img src="../../../../tmp/RtmpUM8kmg/temp_libpath3923a623611/Bioc2020RCWL/vignettes/cwlShiny.png" title="fig:" alt="shinyApp"><div align="center">
 <strong>Figure 1:</strong> Shiny webApp for <code>webEcho</code>.
 </div>
 <p></p>
@@ -576,13 +534,12 @@
 <h3 class="hasAnchor">
 <a href="#wrap-r-functions" class="anchor"></a>Wrap R functions</h3>
 <p><code>Rcwl</code> is also designed to wrap any <em>R</em> function into a cwl tool and then use directly into a pipeline.</p>
-<div class="sourceCode" id="cb87"><html><body><pre class="r"><span class="no">anyfun</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>
+<div class="sourceCode" id="cb61"><html><body><pre class="r"><span class="no">anyfun</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>
 <span class="no">rtool</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam.html">cwlParam</a></span>(<span class="kw">baseCommand</span> <span class="kw">=</span> <span class="no">anyfun</span>,
                   <span class="kw">inputs</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">InputParamList</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span><span class="kw">=</span><span class="st">"anyinput"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string"</span>)))
 <span class="no">rtool</span>$<span class="no">anyinput</span> <span class="kw">&lt;-</span> <span class="st">"abcd"</span>  <span class="co">## assign values for input parameter</span>
-<span class="no">rtoolres</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">rtool</span>) <span class="co">## execute the CWL script</span></pre></body></html></div>
-<pre><code>## [1;30mINFO[0m Final process status is success</code></pre>
-<div class="sourceCode" id="cb89"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">rtoolres</span>$<span class="no">output</span>)  <span class="co">## check results</span></pre></body></html></div>
+<span class="no">rtoolres</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">rtool</span>) <span class="co">## execute the CWL script</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">rtoolres</span>$<span class="no">output</span>)  <span class="co">## check results</span></pre></body></html></div>
 <pre><code>## [1] "[1] \"abcd\""</code></pre>
 </div>
 <div id="build-a-simple-dnaseq-pipeline" class="section level3">
@@ -605,14 +562,13 @@
 <li>Indexing recipe scripts</li>
 </ol>
 <p>The <code>cwlUpdate</code> function updates the recipe scripts from the GitHub repository and collects meta data to a local cache internally using the <code>BiocFileCache</code> package. By default the local cache will be created under your home directory. Here we use temporary directory as an example.</p>
-<div class="sourceCode" id="cb91"><html><body><pre class="r"><span class="no">tools</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html">cwlUpdate</a></span>(<span class="kw">cachePath</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>())</pre></body></html></div>
-<pre><code>## Update scripts...</code></pre>
-<div class="sourceCode" id="cb93"><html><body><pre class="r"><span class="no">tools</span></pre></body></html></div>
+<div class="sourceCode" id="cb63"><html><body><pre class="r"><span class="no">tools</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html">cwlUpdate</a></span>(<span class="kw">cachePath</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>())
+<span class="no">tools</span></pre></body></html></div>
 <pre><code>## class: BiocFileCache
-## bfccache: /tmp/Rtmp4iOAuf/file439742f75fb
+## bfccache: /tmp/Rtmp1TJgES/file43a17382b54
 ## bfccount: 129
 ## For more information see: bfcinfo() or bfcquery()</code></pre>
-<div class="sourceCode" id="cb95"><html><body><pre class="r"><span class="fu">bfcinfo</span>(<span class="no">tools</span>)  <span class="co">## show a tibble list with all available tools. Use</span></pre></body></html></div>
+<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="fu">bfcinfo</span>(<span class="no">tools</span>)  <span class="co">## show a tibble list with all available tools. Use</span></pre></body></html></div>
 <pre><code>## # A tibble: 129 x 13
 ##    rid   rname create_time access_time rpath rtype fpath last_modified_t… etag 
 ##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;
@@ -628,33 +584,33 @@
 ## 10 BFC10 pl_h… 2020-07-23… 2020-07-23… /tmp… local /tmp…               NA &lt;NA&gt; 
 ## # … with 119 more rows, and 4 more variables: expires &lt;dbl&gt;, Type &lt;chr&gt;,
 ## #   Command &lt;chr&gt;, Container &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb97"><html><body><pre class="r">                <span class="co">## "methods(class="BiocFileCache")" to see all</span>
+<div class="sourceCode" id="cb67"><html><body><pre class="r">                <span class="co">## "methods(class="BiocFileCache")" to see all</span>
                 <span class="co">## available functions for an "BiocFileCache" object.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="fu">bfcinfo</span>(<span class="no">tools</span>)$<span class="no">Type</span>)</pre></body></html></div>
 <pre><code>## 
 ## pipeline     tool 
 ##       26      103</code></pre>
-<div class="sourceCode" id="cb99"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">bfcinfo</span>(<span class="no">tools</span>)[<span class="fl">1</span>,])</pre></body></html></div>
+<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu">bfcinfo</span>(<span class="no">tools</span>)[<span class="fl">1</span>,])</pre></body></html></div>
 <pre><code>##    rid         rname         create_time         access_time
-## 1 BFC1 pl_alignMerge 2020-07-23 02:29:43 2020-07-23 02:29:43
+## 1 BFC1 pl_alignMerge 2020-07-23 15:56:01 2020-07-23 15:56:01
 ##                                                                     rpath rtype
-## 1 /tmp/Rtmp4iOAuf/file439742f75fb/RcwlRecipes-master/Rcwl/pl_alignMerge.R local
+## 1 /tmp/Rtmp1TJgES/file43a17382b54/RcwlRecipes-master/Rcwl/pl_alignMerge.R local
 ##                                                                     fpath
-## 1 /tmp/Rtmp4iOAuf/file439742f75fb/RcwlRecipes-master/Rcwl/pl_alignMerge.R
+## 1 /tmp/Rtmp1TJgES/file43a17382b54/RcwlRecipes-master/Rcwl/pl_alignMerge.R
 ##   last_modified_time etag expires     Type                Command Container
 ## 1                 NA &lt;NA&gt;      NA pipeline bwaAlign + mergeBamDup      &lt;NA&gt;</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Search by keyword</li>
 </ol>
 <p>The function <code>cwlSearch</code> helps to search indexed recipes with keywords. In the following example, let’s find the alignment tool using keywords “bwa” and “mem”.</p>
-<div class="sourceCode" id="cb101"><html><body><pre class="r"><span class="no">tl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"bwa"</span>, <span class="st">"mem"</span>), <span class="no">tools</span>)
+<div class="sourceCode" id="cb71"><html><body><pre class="r"><span class="no">tl</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"bwa"</span>, <span class="st">"mem"</span>), <span class="no">tools</span>)
 <span class="no">tl</span>$<span class="no">rname</span></pre></body></html></div>
 <pre><code>## [1] "tl_bwa"</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Load tools and pipelines</li>
 </ol>
 <p>The function <code>cwlInstall</code> “installs” the tools or pipelines to current environment using the name or the file path to the script. a</p>
-<div class="sourceCode" id="cb103"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tl</span>$<span class="no">rname</span>)
+<div class="sourceCode" id="cb73"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tl</span>$<span class="no">rname</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tl</span>$<span class="no">fpath</span>)  <span class="co">## equivalent</span>
 <span class="no">bwa</span></pre></body></html></div>
 <pre><code>## class: cwlParam 
@@ -681,23 +637,23 @@
 <h4 class="hasAnchor">
 <a href="#build-a-pipeline" class="anchor"></a>Build a pipeline</h4>
 <p>Piplines can be easily built using the available tools. Here we use the tools for mapping and marking duplicates to build a simple alignment pipeline. First, we need to check whether the required tools (bwa, samtools and picard markduplicates) are available in our repository.</p>
-<div class="sourceCode" id="cb105"><html><body><pre class="r"><span class="no">tls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="st">"bwa|sam2bam|sortBam|samtools_index|markdup"</span>, <span class="no">tools</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb75"><html><body><pre class="r"><span class="no">tls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="st">"bwa|sam2bam|sortBam|samtools_index|markdup"</span>, <span class="no">tools</span>) <span class="kw">%&gt;%</span>
     <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Type</span> <span class="kw">==</span> <span class="st">"tool"</span>) <span class="kw">%&gt;%</span>
     <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">rname</span>, <span class="no">rpath</span>, <span class="no">Command</span>, <span class="no">Container</span>)
 <span class="no">tls</span></pre></body></html></div>
 <pre><code>## # A tibble: 6 x 4
 ##   rname      rpath                             Command      Container           
 ##   &lt;chr&gt;      &lt;chr&gt;                             &lt;chr&gt;        &lt;chr&gt;               
-## 1 tl_bwa_in… /tmp/Rtmp4iOAuf/file439742f75fb/… bwa index    biocontainers/bwa:v…
-## 2 tl_bwa     /tmp/Rtmp4iOAuf/file439742f75fb/… bwa mem      biocontainers/bwa:v…
-## 3 tl_markdup /tmp/Rtmp4iOAuf/file439742f75fb/… picard Mark… quay.io/biocontaine…
-## 4 tl_sam2bam /tmp/Rtmp4iOAuf/file439742f75fb/… samtools vi… biocontainers/samto…
-## 5 tl_samtoo… /tmp/Rtmp4iOAuf/file439742f75fb/… samtools in… biocontainers/samto…
-## 6 tl_sortBam /tmp/Rtmp4iOAuf/file439742f75fb/… samtools so… biocontainers/samto…</code></pre>
+## 1 tl_bwa_in… /tmp/Rtmp1TJgES/file43a17382b54/… bwa index    biocontainers/bwa:v…
+## 2 tl_bwa     /tmp/Rtmp1TJgES/file43a17382b54/… bwa mem      biocontainers/bwa:v…
+## 3 tl_markdup /tmp/Rtmp1TJgES/file43a17382b54/… picard Mark… quay.io/biocontaine…
+## 4 tl_sam2bam /tmp/Rtmp1TJgES/file43a17382b54/… samtools vi… biocontainers/samto…
+## 5 tl_samtoo… /tmp/Rtmp1TJgES/file43a17382b54/… samtools in… biocontainers/samto…
+## 6 tl_sortBam /tmp/Rtmp1TJgES/file43a17382b54/… samtools so… biocontainers/samto…</code></pre>
 <p>Let’s load all the tools into <em>R</em> environment.</p>
-<div class="sourceCode" id="cb107"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">tls</span>$<span class="no">rpath</span>, <span class="no">cwlInstall</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb77"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">tls</span>$<span class="no">rpath</span>, <span class="no">cwlInstall</span>))</pre></body></html></div>
 <p>Next, we can define the input parameters for the whole pjipeline.</p>
-<div class="sourceCode" id="cb108"><html><body><pre class="r"><span class="no">p1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"threads"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"int"</span>)
+<div class="sourceCode" id="cb78"><html><body><pre class="r"><span class="no">p1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"threads"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"int"</span>)
 <span class="no">p2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"RG"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"string"</span>)
 <span class="no">p3</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"Ref"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>,
                  <span class="kw">secondaryFiles</span> <span class="kw">=</span>
@@ -705,7 +661,7 @@
 <span class="no">p4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"FQ1"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File"</span>)
 <span class="no">p5</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParam.html">InputParam</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"FQ2"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"File?"</span>)</pre></body></html></div>
 <p>Then we define the pipeline steps using the function <code>Step</code>. This function returns <code>stepParam</code> objects, which contain the internal relation with input and output between steps. In the following example, it defines the pipeline steps to process raw fastqs files into duplicates marked alignments.</p>
-<div class="sourceCode" id="cb109"><html><body><pre class="r"><span class="co">## bwa</span>
+<div class="sourceCode" id="cb79"><html><body><pre class="r"><span class="co">## bwa</span>
 <span class="no">s1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/Step.html">Step</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"bwa"</span>, <span class="kw">run</span> <span class="kw">=</span> <span class="no">bwa</span>,
            <span class="kw">In</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">threads</span> <span class="kw">=</span> <span class="st">"threads"</span>,
                      <span class="kw">RG</span> <span class="kw">=</span> <span class="st">"RG"</span>,
@@ -729,7 +685,7 @@
 <span class="no">s4</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/Step.html">Step</a></span>(<span class="kw">id</span> <span class="kw">=</span> <span class="st">"idxBam"</span>, <span class="kw">run</span> <span class="kw">=</span> <span class="no">samtools_index</span>,
            <span class="kw">In</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">bam</span> <span class="kw">=</span> <span class="st">"sortBam/sbam"</span>))</pre></body></html></div>
 <p>Last, we define the outputs for the whole pipeline and connect all steps.</p>
-<div class="sourceCode" id="cb110"><html><body><pre class="r"><span class="co">## req1 &lt;- list(class = "StepInputExpressionRequirement")</span>
+<div class="sourceCode" id="cb80"><html><body><pre class="r"><span class="co">## req1 &lt;- list(class = "StepInputExpressionRequirement")</span>
 <span class="co">## req2 &lt;- list(class = "InlineJavascriptRequirement")</span>
 <span class="co">## outputs</span>
 <span class="co">## o1 &lt;- OutputParam(id = "Bam", type = "File", outputSource = "markdup/mBam")</span>
@@ -741,18 +697,18 @@
 <span class="co">## build pipeline</span>
 <span class="no">Align</span> <span class="kw">&lt;-</span> <span class="no">Align</span> + <span class="no">s1</span> + <span class="no">s2</span> + <span class="no">s3</span> + <span class="no">s4</span></pre></body></html></div>
 <p>The pipeline is ready for use. We can plot the pipeline with <code>plotCWL</code> from the <code>Rcwl</code> package.</p>
-<div class="sourceCode" id="cb111"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/plotCWL.html">plotCWL</a></span>(<span class="no">Align</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb81"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/plotCWL.html">plotCWL</a></span>(<span class="no">Align</span>)</pre></body></html></div>
 <pre><code>## Warning: The `x` argument of `as_tibble.matrix()` must have column names if `.name_repair` is omitted as of tibble 2.0.0.
 ## Using compatibility `.name_repair`.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<div id="htmlwidget-c47d2ed7e54d7b79bd76" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c47d2ed7e54d7b79bd76">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"threads\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,6!\"] \n  \"2\" [label = \"RG\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"1,6!\"] \n  \"3\" [label = \"Ref\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,6!\"] \n  \"4\" [label = \"FQ1\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"3,6!\"] \n  \"5\" [label = \"FQ2\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"4,6!\"] \n  \"6\" [label = \"Idx\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,1!\"] \n  \"7\" [label = \"bwa\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,5!\"] \n  \"8\" [label = \"sam2bam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,4!\"] \n  \"9\" [label = \"sortBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,3!\"] \n  \"10\" [label = \"idxBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,2!\"] \n  \"1\"->\"7\" \n  \"2\"->\"7\" \n  \"3\"->\"7\" \n  \"4\"->\"7\" \n  \"5\"->\"7\" \n  \"7\"->\"8\" \n  \"8\"->\"9\" \n  \"9\"->\"10\" \n  \"10\"->\"6\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><div align="center">
+<div id="htmlwidget-ea4f3e9cfdaee1122ed2" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ea4f3e9cfdaee1122ed2">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"threads\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,6!\"] \n  \"2\" [label = \"RG\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"1,6!\"] \n  \"3\" [label = \"Ref\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,6!\"] \n  \"4\" [label = \"FQ1\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"3,6!\"] \n  \"5\" [label = \"FQ2\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"4,6!\"] \n  \"6\" [label = \"Idx\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,1!\"] \n  \"7\" [label = \"bwa\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,5!\"] \n  \"8\" [label = \"sam2bam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,4!\"] \n  \"9\" [label = \"sortBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,3!\"] \n  \"10\" [label = \"idxBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,2!\"] \n  \"1\"->\"7\" \n  \"2\"->\"7\" \n  \"3\"->\"7\" \n  \"4\"->\"7\" \n  \"5\"->\"7\" \n  \"7\"->\"8\" \n  \"8\"->\"9\" \n  \"9\"->\"10\" \n  \"10\"->\"6\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><div align="center">
 <strong>Figure 7:</strong> Visualization for the pipeline <code>Align</code>.
 </div>
 <p></p>
 <p>Now let’s test the pipeline with some real data.</p>
-<div class="sourceCode" id="cb113"><html><body><pre class="r"><span class="no">sysdir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"Bioc2020RCWL"</span>)
+<div class="sourceCode" id="cb83"><html><body><pre class="r"><span class="no">sysdir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="kw">package</span><span class="kw">=</span><span class="st">"Bioc2020RCWL"</span>)
 <span class="no">ids</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"normal"</span>, <span class="st">"tumor"</span>)
 <span class="no">fq1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">sysdir</span>, <span class="st">"vignettes"</span>, <span class="st">"extdata"</span>), <span class="kw">pattern</span><span class="kw">=</span><span class="st">"1.fq.gz"</span>, <span class="kw">full.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="no">fq2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">sysdir</span>, <span class="st">"vignettes"</span>, <span class="st">"extdata"</span>), <span class="kw">pattern</span><span class="kw">=</span><span class="st">"2.fq.gz"</span>, <span class="kw">full.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
@@ -771,7 +727,7 @@
                       <span class="no">paramList</span>, <span class="kw">BPPARAM</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/MulticoreParam-class.html">MulticoreParam</a></span>(<span class="fl">2</span>),
                       <span class="kw">stderr</span> <span class="kw">=</span> <span class="st">""</span>, <span class="kw">cwlTemp</span><span class="kw">=</span><span class="fl">TRUE</span>, <span class="kw">docker</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <p>Check the results:</p>
-<div class="sourceCode" id="cb114"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"normal"</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb84"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"normal"</span>))</pre></body></html></div>
 </div>
 </div>
 <div id="rcwl-tutorial" class="section level3">

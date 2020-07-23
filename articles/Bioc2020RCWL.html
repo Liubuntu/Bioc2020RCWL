@@ -44,16 +44,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../articles/Bioc2020RCWL.html">Get started</a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/Bioc2020RCWL.html">Workshop</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -63,7 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Bioc2020RCWL4devel.html">UNKNOWN TITLE</a>
+      <a href="../articles/Bioc2020RCWL.html">Bioc2020RCWL (usage)</a>
+    </li>
+    <li>
+      <a href="../articles/Bioc2020RCWL4devel.html">Bioc2020RCWL (developers)</a>
     </li>
   </ul>
 </li>
@@ -98,6 +92,7 @@
 
     
     
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">message</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <div id="connecting-bioconductor-to-other-bioinformatics-tools-using-rcwl" class="section level1">
 <h1 class="hasAnchor">
 <a href="#connecting-bioconductor-to-other-bioinformatics-tools-using-rcwl" class="anchor"></a>Connecting Bioconductor to other bioinformatics tools using <code>Rcwl</code>
@@ -221,7 +216,7 @@
 <li>Run the scRNA-seq preprocessing pipeline which combines alignment and QC steps in <em>R</em>
 </li>
 <li>Create a basic echo tool using <code>Rcwl</code> (developers only)</li>
-<li>?? Build a basic pipeline ??? using <code>RCWL</code> (developers only)</li>
+<li>Build a basic DNAseq pipeline using <code>RCWL</code> (developers only)</li>
 </ul>
 </div>
 </div>
@@ -237,7 +232,7 @@
 <h3 class="hasAnchor">
 <a href="#data-resources" class="anchor"></a>Data resources</h3>
 <p>We have prepared all the files needed in this workshop in a GitHub repository, and now we need to download these files to a local temporary folder for the demo purpose. We will also use the <code>path</code> below as the file path to save all intermediate files.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"testdata"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"Bioc2020RCWL"</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"testdata"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"Bioc2020RCWL"</span>)
 <span class="no">outpath</span> <span class="kw">&lt;-</span> <span class="st">"~/outdir"</span></pre></body></html></div>
 <p>The single cell data resource we are using today is the 1k PBMCs from a Healthy Donor (v3 chemistry) from 10x genomics, consisting of 1000 Peripheral blood mononuclear cells (PBMCs) extracted from a healthy donor, where PBMCs are primary cells with relatively small amounts of RNA (~1pg RNA/cell).</p>
 <p>The source material consists of 6 FASTQ files split into two sequencing lanes L001 and L002, each with three reads of R1 (barcodes), R2 (cDNA sequences), I1 (illumina lane infold). The Cell Ranger pipeline requires all three files to perform the demultiplexing and quantification, but RNA STARsolo does not require the I1 lane file to perform the analysis. The source files can be found <a href="https://zenodo.org/record/3457880#.XxLjOvhKjvU">here</a>.</p>
@@ -263,52 +258,20 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <a href="#loading-the-tools" class="anchor"></a>Loading the tools</h4>
 <p>With <code>Rcwl</code>, we can easily write cwl tools and pipelines programmatically in <em>R</em> (Will cover more of this topic later for developers). While we already have the <em>R</em> version of many command line tools in <code>RcwlPipelines</code>, all we need to do is: 1) Search and load the tools/pipelines, 2) assign values for each of the defined parameters, 3) execute the command, and 4) get results saved in user-specified directory, all within <em>R</em>.</p>
 <p>Here we show the usage of 3 core functions: <code>cwlUpdate</code>, <code>cwlSearch</code> and <code>cwlInstall</code>.</p>
-<div id="cwlupdate" class="section level5">
-<h5 class="hasAnchor">
-<a href="#cwlupdate" class="anchor"></a><code>cwlUpdate</code>
-</h5>
+<ul>
+<li><code>cwlUpdate</code></li>
+</ul>
 <p>The <code>cwlUpdate</code> syncs the current Rcwl recipes and return a <code>BiocFileCache</code> object which contains the most updated Rcwl recipes.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcwl</span>)</pre></body></html></div>
-<pre><code>## Loading required package: yaml</code></pre>
-<pre><code>## Loading required package: S4Vectors</code></pre>
-<pre><code>## Loading required package: stats4</code></pre>
-<pre><code>## Loading required package: BiocGenerics</code></pre>
-<pre><code>## Loading required package: parallel</code></pre>
-<pre><code>## 
-## Attaching package: 'BiocGenerics'</code></pre>
-<pre><code>## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, sd, var, xtabs</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,
-##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
-##     union, unique, unsplit, which.max, which.min</code></pre>
-<pre><code>## 
-## Attaching package: 'S4Vectors'</code></pre>
-<pre><code>## The following object is masked from 'package:base':
-## 
-##     expand.grid</code></pre>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RcwlPipelines</span>)</pre></body></html></div>
-<pre><code>## Loading required package: BiocFileCache</code></pre>
-<pre><code>## Loading required package: dbplyr</code></pre>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">atls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html">cwlUpdate</a></span>()  <span class="co">## sync the tools/pipelines</span></pre></body></html></div>
-<pre><code>## Update scripts...</code></pre>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">atls</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">Rcwl</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RcwlPipelines</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">atls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html">cwlUpdate</a></span>()  <span class="co">## sync the tools/pipelines</span>
+<span class="no">atls</span></pre></body></html></div>
 <pre><code>## class: BiocFileCache
 ## bfccache: /github/home/.cache/Rcwl
 ## bfccount: 129
 ## For more information see: bfcinfo() or bfcquery()</code></pre>
 <p>the <code>bfcinfo()</code> function returns a BiocFileCache tibble containing all information about each available tool or pipeline. Currently we have integrated 103 command line tools and 26 pipelines.</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu">bfcinfo</span>(<span class="no">atls</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu">bfcinfo</span>(<span class="no">atls</span>)</pre></body></html></div>
 <pre><code>## # A tibble: 129 x 13
 ##    rid   rname create_time access_time rpath rtype fpath last_modified_t… etag 
 ##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;
@@ -324,21 +287,19 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ## 10 BFC10 pl_h… 2020-07-23… 2020-07-23… /git… local /git…               NA &lt;NA&gt; 
 ## # … with 119 more rows, and 4 more variables: expires &lt;dbl&gt;, Type &lt;chr&gt;,
 ## #   Command &lt;chr&gt;, Container &lt;chr&gt;</code></pre>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="fu">bfcinfo</span>(<span class="no">atls</span>)$<span class="no">Type</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="fu">bfcinfo</span>(<span class="no">atls</span>)$<span class="no">Type</span>)</pre></body></html></div>
 <pre><code>## 
 ## pipeline     tool 
 ##       26      103</code></pre>
-</div>
-<div id="cwlsearch" class="section level5">
-<h5 class="hasAnchor">
-<a href="#cwlsearch" class="anchor"></a><code>cwlSearch</code>
-</h5>
+<ul>
+<li><code>cwlSearch</code></li>
+</ul>
 <p>We can use keywords to search for any specific tools/pipelines of interest, which internally search the keywords against the BiocFileCache tibble in columns of “rname”, “rpath”, “fpath”, “Command” and “Containers”. Multiple keywords are allowed.</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">tls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"STAR"</span>, <span class="st">"index"</span>))
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">tls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"STAR"</span>, <span class="st">"index"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">tls</span>)</pre></body></html></div>
 <pre><code>##      rid        rname         create_time         access_time
-## 1  BFC18 pl_rnaseq_Sf 2020-07-23 02:24:42 2020-07-23 02:24:42
-## 2 BFC110 tl_STARindex 2020-07-23 02:25:06 2020-07-23 02:25:06
+## 1  BFC18 pl_rnaseq_Sf 2020-07-23 15:51:35 2020-07-23 15:51:35
+## 2 BFC110 tl_STARindex 2020-07-23 15:51:56 2020-07-23 15:51:56
 ##                                                             rpath rtype
 ## 1 /github/home/.cache/Rcwl/RcwlRecipes-master/Rcwl/pl_rnaseq_Sf.R local
 ## 2 /github/home/.cache/Rcwl/RcwlRecipes-master/Rcwl/tl_STARindex.R local
@@ -354,13 +315,11 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ##                              Container
 ## 1                                 &lt;NA&gt;
 ## 2 quay.io/biocontainers/star:2.7.5a--0</code></pre>
-</div>
-<div id="cwlinstall" class="section level5">
-<h5 class="hasAnchor">
-<a href="#cwlinstall" class="anchor"></a><code>cwlInstall</code>
-</h5>
+<ul>
+<li><code>cwlInstall</code></li>
+</ul>
 <p>The last core function is <code>cwlInstall</code> which sources the Rcwl script for the interested tool/pipeline into the <em>R</em> working environment.</p>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tls</span>$<span class="no">rname</span>[<span class="fl">2</span>])  <span class="co">## "tl_STARindex"</span>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tls</span>$<span class="no">rname</span>[<span class="fl">2</span>])  <span class="co">## "tl_STARindex"</span>
 <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tls</span>$<span class="no">fpath</span>[<span class="fl">2</span>])  <span class="co">## equivalent to the above. </span>
 <span class="no">STARindex</span></pre></body></html></div>
 <pre><code>## class: cwlParam 
@@ -381,29 +340,28 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ##   type: Directory
 ##   outputBinding:
 ##     glob: $(inputs.genomeDir)</code></pre>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlVersion</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">cwlVersion</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
 <pre><code>## [1] "v1.0"</code></pre>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
 <pre><code>## inputs:
 ##   genomeDir (string): --genomeDir STARindex
 ##   genomeFastaFiles (File): --genomeFastaFiles 
 ##   sjdbGTFfile (File): --sjdbGTFfile 
 ##   runThreadN (int): --runThreadN 4</code></pre>
-<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">outputs</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">outputs</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
 <pre><code>## outputs:
 ## outIndex:
 ##   type: Directory
 ##   outputBinding:
 ##     glob: $(inputs.genomeDir)</code></pre>
-<div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">requirements</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlParam-methods.html">requirements</a></span>(<span class="no">STARindex</span>)</pre></body></html></div>
 <pre><code>## [[1]]
 ## [[1]]$class
 ## [1] "DockerRequirement"
 ## 
 ## [[1]]$dockerPull
 ## [1] "quay.io/biocontainers/star:2.7.5a--0"</code></pre>
-<p>Now the Rcwl version of <code>STARindex</code> is successfully loaded in to <em>R</em> and ready to use.</p>
-</div>
+<p>Now the Rcwl version of <code>STARindex</code> is successfully loaded into <em>R</em> and ready to use.</p>
 </div>
 <div id="indexing" class="section level4">
 <h4 class="hasAnchor">
@@ -412,15 +370,15 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <pre><code>$ STAR --runMode genomeGenerate --runThreadN 4 --genomeDir STARindex 
 --genomeFastaFiles chr21.fa --sjdbGTFfile Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <p>Using the <code>STARindex</code>, we can equivalently do the same indexing within <em>R</em> which was internally passed as a cwl script. What we need to do is assign values for the input parameters, and execute the cwl script using <code>runCWL</code> function.</p>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARindex</span>)
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARindex</span>)
 <span class="no">STARindex</span>$<span class="no">genomeFastaFiles</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="st">"chr21.fa"</span>)
 <span class="no">STARindex</span>$<span class="no">sjdbGTFfile</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="st">"Homo_sapiens.GRCh37.75.21.gtf"</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
+<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
     <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="kw">cwl</span> <span class="kw">=</span> <span class="no">STARindex</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARindex_output"</span>),
            <span class="kw">docker</span> <span class="kw">=</span> <span class="st">"singularity"</span>, <span class="kw">showLog</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
     ) <span class="co">## elapsed: 74.795S</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARindex_output"</span>), <span class="kw">recursive</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p>Now that the output files are in the folder of “STARindex_output” under the temporary directory. And then these intermediate results are ready to pass to the next <code>Rcwl</code> tool for single cell read alignment.</p>
+<p>Now that the output files are generated in the folder of “STARindex_output” under <code>outpath</code>. These results are ready to pass to the next tool for single cell read alignment.</p>
 </div>
 <div id="alignment" class="section level4">
 <h4 class="hasAnchor">
@@ -428,7 +386,7 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <p>To align single cell reads using <code>STAR</code>, it can be done directly in command line:</p>
 <pre><code>$ STAR --soloType CB_UMI_Simple --genomeDir STARindex_output/STARindex --soloCBwhitelist subset15_demo_barcode.txt --soloUMIlen 12 --readFilesIn subset15_chr21_pbmc_1k_v3_S1_L001_R2_001.fastq.gz,subset15_chr21_pbmc_1k_v3_S1_L002_R2_001.fastq.gz subset15_chr21_pbmc_1k_v3_S1_L001_R1_001.fastq.gz,subset15_chr21_pbmc_1k_v3_S1_L002_R1_001.fastq.gz --soloUMIfiltering MultiGeneUMI --soloCBmatchWLtype 1MM_multi_pseudocounts --readFilesCommand gzcat --runThreadN 1</code></pre>
 <p>Now we can follow the previous example to load our Rcwl version of <code>STARsolo</code> and run the command in <em>R</em>.</p>
-<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"tl_STARsolo"</span>)  <span class="co">## "tl_STARsolo"</span>
+<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"tl_STARsolo"</span>)  <span class="co">## "tl_STARsolo"</span>
 <span class="no">STARsolo</span></pre></body></html></div>
 <pre><code>## class: cwlParam 
 ##  cwlClass: CommandLineTool 
@@ -463,7 +421,7 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ##   type: Directory
 ##   outputBinding:
 ##     glob: Solo.out</code></pre>
-<div class="sourceCode" id="cb46"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARsolo</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARsolo</span>)</pre></body></html></div>
 <pre><code>## inputs:
 ##   readFilesIn_cdna (File[]): --readFilesIn 
 ##   readFilesIn_cb (File[]):  
@@ -472,7 +430,7 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ##   soloType (string): --soloType CB_UMI_Simple
 ##   soloUMIlen (string): --soloUMIlen 12
 ##   runThreadN (int): --runThreadN 1</code></pre>
-<div class="sourceCode" id="cb48"><html><body><pre class="r"><span class="no">cdna.fastq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="no">path</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"_R2_"</span>))
+<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="no">cdna.fastq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="no">path</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"_R2_"</span>))
 <span class="no">cb.fastq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="no">path</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">"_R1_"</span>))
 <span class="no">cblist</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="st">"subset15_demo_barcode.txt"</span>)
 <span class="no">genomeDir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">path</span>, <span class="st">"STARindex_output/STARindex"</span>)
@@ -481,26 +439,26 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <span class="no">STARsolo</span>$<span class="no">readFilesIn_cb</span> <span class="kw">&lt;-</span> <span class="no">cb.fastq</span>
 <span class="no">STARsolo</span>$<span class="no">whiteList</span> <span class="kw">&lt;-</span> <span class="no">cblist</span>
 <span class="no">STARsolo</span>$<span class="no">genomeDir</span> <span class="kw">&lt;-</span> <span class="no">genomeDir</span></pre></body></html></div>
-<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">STARsolo</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARsolo_output"</span>), ,
+<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">STARsolo</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARsolo_output"</span>), ,
        <span class="kw">docker</span> <span class="kw">=</span> <span class="st">"singularity"</span>, <span class="kw">showLog</span> <span class="kw">=</span> <span class="fl">TRUE</span>)  <span class="co">## approximately 2 mins</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARsolo_output"</span>), <span class="kw">recursive</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p>Now we have a folder generated in the temporary directory called “STARsolo_output”. The results include ?? which can be passed into the next tool.</p>
+<p>Now we have all files generated in the “STARsolo_output” folder under <code>outpath</code>, which can be passed into the next tool.</p>
 </div>
 <div id="dropletutils" class="section level4">
 <h4 class="hasAnchor">
 <a href="#dropletutils" class="anchor"></a><code>DropletUtils</code>
 </h4>
 <p>To get a high quality count matrix we must apply the <code>DropletUtils</code> tool, which will produce a filtered dataset that is more representative of the Cell Ranger pipeline.</p>
-<div class="sourceCode" id="cb50"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"tl_DropletUtils"</span>)
+<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"tl_DropletUtils"</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">DropletUtils</span>)</pre></body></html></div>
 <pre><code>## inputs:
 ##   dirname (Directory): dir.name= 
 ##   lower (int): lower= 100
 ##   df (int): df= 20</code></pre>
-<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="no">DropletUtils</span>$<span class="no">dirname</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARsolo_output/Solo.out"</span>)
+<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">DropletUtils</span>$<span class="no">dirname</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARsolo_output/Solo.out"</span>)
 <span class="no">DropletUtils</span>$<span class="no">lower</span> <span class="kw">&lt;-</span> <span class="fl">100</span>
 <span class="no">DropletUtils</span>$<span class="no">df</span> <span class="kw">&lt;-</span> <span class="fl">5</span></pre></body></html></div>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">DropletUtils</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"dropletUtils_output"</span>), <span class="kw">showLog</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">DropletUtils</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"dropletUtils_output"</span>), <span class="kw">showLog</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"dropletUtils_output"</span>))</pre></body></html></div>
 <p>Now that we get 2 output files:</p>
 <ul>
@@ -508,7 +466,7 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 </li>
 <li>The <code>SingleCellExperiment</code> object which has filtered out unqualified cells.</li>
 </ul>
-<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="co">#&gt; Biobase::openPDF(file.path(path, "dropletUtils_output/diagnostics.pdf"))</span>
+<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="co">#&gt; Biobase::openPDF(file.path(path, "dropletUtils_output/diagnostics.pdf"))</span>
 <span class="no">sce</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"dropletUtils_output/sce_filtered.rds"</span>))
 <span class="no">sce</span></pre></body></html></div>
 </div>
@@ -517,27 +475,27 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <h3 class="hasAnchor">
 <a href="#scrna-seq-preprocessing-pipeline" class="anchor"></a>scRNA-seq preprocessing pipeline</h3>
 <p>Alternatively and more easily, we can also run the pipeline that was available in <code>RcwlPipelines</code> which has integrated the <code>STARsolo</code> and <code>DropletUtils</code> for a streamlined preprocessing analysis within <em>R</em>.</p>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"pl_STARsoloDropletUtils"</span>)
+<div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="st">"pl_STARsoloDropletUtils"</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/InputParamList.html">inputs</a></span>(<span class="no">STARsoloDropletUtils</span>)
 <span class="no">STARsoloDropletUtils</span>$<span class="no">fastq_cdna</span> <span class="kw">&lt;-</span> <span class="no">cdna.fastq</span>
 <span class="no">STARsoloDropletUtils</span>$<span class="no">fastq_cb</span> <span class="kw">&lt;-</span> <span class="no">cb.fastq</span>
 <span class="no">STARsoloDropletUtils</span>$<span class="no">genomeDir</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"STARindex_output/STARindex"</span>)
 <span class="no">STARsoloDropletUtils</span>$<span class="no">whiteList</span> <span class="kw">&lt;-</span> <span class="no">cblist</span>
 <span class="no">STARsoloDropletUtils</span>$<span class="no">runThreadN</span> <span class="kw">&lt;-</span> <span class="fl">2</span></pre></body></html></div>
-<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">STARsoloDropletUtils</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"scpipeline_output"</span>),
+<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span>(<span class="no">STARsoloDropletUtils</span>, <span class="kw">outdir</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"scpipeline_output"</span>),
        <span class="kw">showLog</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="no">outpath</span>, <span class="st">"scpipeline_output"</span>), <span class="kw">recursive</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/OutputParamList.html">outputs</a></span>(<span class="no">STARsoloDropletUtils</span>)</pre></body></html></div>
 </div>
-</div>
-<div id="todo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#todo" class="anchor"></a>todo:</h2>
+<div id="todo" class="section level3">
+<h3 class="hasAnchor">
+<a href="#todo" class="anchor"></a>todo:</h3>
 <ul>
 <li>explain the output globs.</li>
 <li>Explain the cwl files. (config, values)</li>
 <li>test docker.</li>
 </ul>
+</div>
 </div>
 </div>
   </div>

@@ -61,16 +61,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="articles/Bioc2020RCWL.html">Get started</a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
+  <a href="articles/Bioc2020RCWL.html">Workshop</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -80,7 +71,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Bioc2020RCWL4devel.html">UNKNOWN TITLE</a>
+      <a href="articles/Bioc2020RCWL.html">Bioc2020RCWL (usage)</a>
+    </li>
+    <li>
+      <a href="articles/Bioc2020RCWL4devel.html">Bioc2020RCWL (developers)</a>
     </li>
   </ul>
 </li>
@@ -123,13 +117,20 @@
 <h2 class="hasAnchor">
 <a href="#workshop-description" class="anchor"></a>Workshop Description</h2>
 <p>This workshop introduces the Bioconductor toolchain for usage and development of reproducible bioinformatics pipelines using packages of Rcwl and RcwlPipelines. The Common Workflow Language (CWL) is an open standard for development of data analysis workflows that is portable and scalable across different tools and working environments. Rcwl provides a simple way to wrap command line tools and build CWL data analysis pipelines programmatically within R. It increases the ease of usage, development, and maintenance of CWL pipelines, and furthermore offers higher performance by intuitively supporting parallel work with high performance computing (HPC). More than a hundred of pre-built and tested CWL tool/pipeline recipes are included in RcwlPipelines. These tools and pipelines are highly modularized for easy customization of complex bioinformatics analysis. Here we included a scRNAseq preprocessing pipeline which uses <code>STARsolo</code> for alignment and quantification, and <code>DropletUtils</code> for filtering raw gene-barcode matrix and removing empty droplets. This pipeline demonstrates the typical use case of our packages. More details for usage and examples are available on Rcwl website: <a href="https://hubentu.github.io/Rcwl/" class="uri">https://hubentu.github.io/Rcwl/</a>.</p>
+</div>
+<div id="docker-instructions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#docker-instructions" class="anchor"></a>Docker instructions:</h2>
+<p>First, we need to initiate the docker. The follow command will mount the local current directory (<code>$(pwd)</code>) to the docker container (<code>/home/rstudio/outdir</code>), which is required to store the output files from our tutorial.</p>
 <pre><code>docker pull liubuntu/bioc2020rcwl:latest
-docker run -e PASSWORD=bioconductor -p 8787:8787 -d --privileged liubuntu/bioc2020rcwl
-# Open http://localhost:8787 and login with username "rstudio" and password "bioconductor"
-# Run browseVignettes(package = "Bioc2020RCWL")
-# Click on one of the links, “HTML”, “source”, “R code”. In case of “The requested page was not found” error, add help/ to the URL right after the hostname: "http://localhost:8787/help/library/Bioc2020RCWL/doc/Bioc2020RCWL.html" 
-docker ps -a # List all running containers
-docker stop &lt;CONTAINER ID&gt; # or, &lt;NAMES&gt; - Stop a container</code></pre>
+docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged bioc2020rcwl</code></pre>
+<p>Then open <a href="http://localhost:8787" class="uri">http://localhost:8787</a> in your browser and login with username “rstudio” and password “bioconductor”. Within rstudio, you can open the workshop script <code>vignettes/Bioc2020RCWL.Rmd</code>.</p>
+<p>You can also look at the html file by:</p>
+<pre><code><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes(package = "Bioc2020RCWL")</a></code></pre>
+<p>Click on one of the links, “HTML”, “source”, “R code”. In case of “The requested page was not found” error, add “help/” to the URL right after the hostname: “<a href="http://localhost:8787/help/library/Bioc2020RCWL/doc/Bioc2020RCWL.html" class="uri">http://localhost:8787/help/library/Bioc2020RCWL/doc/Bioc2020RCWL.html</a>”</p>
+<p>When you are done with the workshop, stop you docker:</p>
+<pre><code>docker ps -a # List all running containers 
+docker stop &lt;CONTAINER ID&gt; # or, &lt;NAMES&gt; - Stop a container </code></pre>
 </div>
 </div>
   </div>
