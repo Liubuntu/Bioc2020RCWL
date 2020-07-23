@@ -301,7 +301,7 @@ genomeDir <- file.path(path, "STARindex_output/STARindex")
 STARsolo$readFilesIn_cdna <- cdna.fastq
 STARsolo$readFilesIn_cb <- cb.fastq
 STARsolo$whiteList <- cblist
-STARsolo$genomeDir <- genomeDir ## ??
+STARsolo$genomeDir <- genomeDir
 ```
 
 ```{r, eval=FALSE}
