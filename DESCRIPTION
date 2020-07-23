@@ -31,8 +31,8 @@ Description: This workshop introduces the Bioconductor toolchain for
 	     packages. More details for usage and examples are
 	     available on Rcwl
 	     website(https://hubentu.github.io/Rcwl/)
-Depends: R (>= 4.0.0), Rcwl, RcwlPipelines, git2r
-Imports: BiocParallel, shiny
+Depends: R (>= 4.0.0), Rcwl, RcwlPipelines
+Imports: BiocParallel, shiny, DropletUtils
 Encoding: UTF-8
 LazyData: true
 License: CC BY 4.0  + file LICENSE

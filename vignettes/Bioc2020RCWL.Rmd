@@ -6,7 +6,7 @@ output:
     toc_depth: 3
     fig_width: 5
 vignette: >
-  %\VignetteIndexEntry{Bioc2020RCWL}
+  %\VignetteIndexEntry{Bioc2020RCWL-1}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding[utf8]{inputenc}
 ---
@@ -112,11 +112,8 @@ temporary folder for the demo purpose. We will also use the `path`
 below as the file path to save all intermediate files.
 
 ```{r}
-library(git2r)
-path <- file.path(tempfile(pattern="git2r-"), "testdata")
-dir.create(path, recursive=TRUE)
-repo <- clone("https://github.com/hubentu/testdata.git", path)
-dir(path)
+path <- system.file("testdata", package = "Bioc2020RCWL")
+outpath <- "~/outdir"
 ```
 
 The single cell data resource we are using today is the 1k PBMCs from
@@ -213,7 +210,7 @@ integrated 103 command line tools and 26 pipelines.
 
 ```{r}
 bfcinfo(atls)
-bfcinfo(atls)$Type
+table(bfcinfo(atls)$Type)
 ```
 
 ##### `cwlSearch`
@@ -260,14 +257,18 @@ _R_ which was internally passed as a cwl script. What we need to do is
 assign values for the input parameters, and execute the cwl script
 using `runCWL` function.
 
-```{r}
+```{r, eval=FALSE}
 inputs(STARindex)
 STARindex$genomeFastaFiles <- file.path(path, "chr21.fa")
 STARindex$sjdbGTFfile <- file.path(path, "Homo_sapiens.GRCh37.75.21.gtf")
+```
+
+```{r, eval=FALSE}
 system.time(
-    runCWL(cwl = STARindex, outdir = file.path(path, "STARindex_output"), showLog = TRUE)
+    runCWL(cwl = STARindex, outdir = file.path(outpath, "STARindex_output"),
+           docker = "singularity", showLog = TRUE)
     ) ## elapsed: 74.795S
-dir(file.path(path, "STARindex_output"), recursive = TRUE)
+dir(file.path(outpath, "STARindex_output"), recursive = TRUE)
 ```
 
 Now that the output files are in the folder of "STARindex_output"
@@ -290,7 +291,8 @@ Now we can follow the previous example to load our Rcwl version of
 cwlInstall("tl_STARsolo")  ## "tl_STARsolo"
 STARsolo
 inputs(STARsolo)
-
+```
+```{r, eval=FALSE}
 cdna.fastq <- file.path(path, list.files(path, pattern = "_R2_"))
 cb.fastq <- file.path(path, list.files(path, pattern = "_R1_"))
 cblist <- file.path(path, "subset15_demo_barcode.txt")
@@ -300,9 +302,12 @@ STARsolo$readFilesIn_cdna <- cdna.fastq
 STARsolo$readFilesIn_cb <- cb.fastq
 STARsolo$whiteList <- cblist
 STARsolo$genomeDir <- genomeDir ## ??
+```
 
-runCWL(STARsolo, outdir = file.path(path, "STARsolo_output"), showLog = TRUE)  ## approximately 2 mins
-dir(file.path(path, "STARsolo_output"), recursive = TRUE)
+```{r, eval=FALSE}
+runCWL(STARsolo, outdir = file.path(outpath, "STARsolo_output"), ,
+       docker = "singularity", showLog = TRUE)  ## approximately 2 mins
+dir(file.path(outpath, "STARsolo_output"), recursive = TRUE)
 ```     
 Now we have a folder generated in the temporary directory called
 "STARsolo_output". The results include ?? which can be passed into
@@ -316,13 +321,17 @@ representative of the Cell Ranger pipeline.
 
 ```{r}       
 cwlInstall("tl_DropletUtils")
-
 inputs(DropletUtils)
-DropletUtils$dirname <- file.path(path, "STARsolo_output/Solo.out")
+```
+```{r, eval=FALSE}
+DropletUtils$dirname <- file.path(outpath, "STARsolo_output/Solo.out")
 DropletUtils$lower <- 100
 DropletUtils$df <- 5
-runCWL(DropletUtils, outdir = file.path(path, "dropletUtils_output"), showLog = TRUE)
-dir(file.path(path, "dropletUtils_output"))
+```
+
+```{r, eval=FALSE}
+runCWL(DropletUtils, outdir = file.path(outpath, "dropletUtils_output"), showLog = TRUE)
+dir(file.path(outpath, "dropletUtils_output"))
 ```
 
 Now that we get 2 output files: 
@@ -330,9 +339,9 @@ Now that we get 2 output files:
 - The pdf file with 2 diagnostic figures: Barcode ranks, and empty droplets. Details for each diagnostic figures please refer to the [DropletUtils vignette](https://bioconductor.org/packages/release/bioc/vignettes/DropletUtils/inst/doc/DropletUtils.html)  
 - The `SingleCellExperiment` object which has filtered out unqualified cells.  
 
-```{r}
+```{r, eval=FALSE}
 #> Biobase::openPDF(file.path(path, "dropletUtils_output/diagnostics.pdf"))
-sce <- readRDS(file.path(path, "dropletUtils_output/sce_filtered.rds"))
+sce <- readRDS(file.path(outpath, "dropletUtils_output/sce_filtered.rds"))
 sce
 ```
 ### scRNA-seq preprocessing pipeline
@@ -341,20 +350,20 @@ Alternatively and more easily, we can also run the pipeline that was
 available in `RcwlPipelines` which has integrated the `STARsolo` and
 `DropletUtils` for a streamlined preprocessing analysis within _R_.
 
-```{r}
+```{r, eval=FALSE}
 cwlInstall("pl_STARsoloDropletUtils")
 inputs(STARsoloDropletUtils)
 STARsoloDropletUtils$fastq_cdna <- cdna.fastq
 STARsoloDropletUtils$fastq_cb <- cb.fastq
-STARsoloDropletUtils$genomeDir <- file.path(path, "STARindex_output/STARindex")
+STARsoloDropletUtils$genomeDir <- file.path(outpath, "STARindex_output/STARindex")
 STARsoloDropletUtils$whiteList <- cblist
 STARsoloDropletUtils$runThreadN <- 2
-runCWL(STARsoloDropletUtils, outdir = "STARsoloDropletUtils_output", showLog = TRUE)
 ```
 
-Let's take a look at the output for this pipeline: 
-
-```{r}
+```{r, eval=FALSE}
+runCWL(STARsoloDropletUtils, outdir = file.path(outpath, "scpipeline_output"),
+       showLog = TRUE)
+dir(file.path(outpath, "scpipeline_output"), recursive = TRUE)
 outputs(STARsoloDropletUtils)
 ```
 
