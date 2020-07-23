@@ -337,8 +337,8 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 <div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">tls</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlSearch.html">cwlSearch</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"STAR"</span>, <span class="st">"index"</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="no">tls</span>)</pre></body></html></div>
 <pre><code>##      rid        rname         create_time         access_time
-## 1  BFC18 pl_rnaseq_Sf 2020-07-23 02:04:31 2020-07-23 02:04:31
-## 2 BFC110 tl_STARindex 2020-07-23 02:04:52 2020-07-23 02:04:52
+## 1  BFC18 pl_rnaseq_Sf 2020-07-23 02:24:42 2020-07-23 02:24:42
+## 2 BFC110 tl_STARindex 2020-07-23 02:25:06 2020-07-23 02:25:06
 ##                                                             rpath rtype
 ## 1 /github/home/.cache/Rcwl/RcwlRecipes-master/Rcwl/pl_rnaseq_Sf.R local
 ## 2 /github/home/.cache/Rcwl/RcwlRecipes-master/Rcwl/tl_STARindex.R local
@@ -354,6 +354,11 @@ Homo_sapiens.GRCh37.75.21.gtf</code></pre>
 ##                              Container
 ## 1                                 &lt;NA&gt;
 ## 2 quay.io/biocontainers/star:2.7.5a--0</code></pre>
+</div>
+<div id="cwlinstall" class="section level5">
+<h5 class="hasAnchor">
+<a href="#cwlinstall" class="anchor"></a><code>cwlInstall</code>
+</h5>
 <p>The last core function is <code>cwlInstall</code> which sources the Rcwl script for the interested tool/pipeline into the <em>R</em> working environment.</p>
 <div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tls</span>$<span class="no">rname</span>[<span class="fl">2</span>])  <span class="co">## "tl_STARindex"</span>
 <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlInstall.html">cwlInstall</a></span>(<span class="no">tls</span>$<span class="no">fpath</span>[<span class="fl">2</span>])  <span class="co">## equivalent to the above. </span>
