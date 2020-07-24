@@ -64,8 +64,6 @@ Some basic idea about how CWL works.
 
 * [`Rcwl`](https://bioconductor.org/packages/Rcwl/)
 * [`RcwlPipelines`](https://bioconductor.org/packages/RcwlPipelines/)
-<!-- * [`BiocParallel`](https://bioconductor.org/packages/BiocParallel/) -->
-<!-- *[`shiny`](https://CRAN.R-project.org/package=shiny) -->
 
 System dependencies
 * [cwltool](https://github.com/common-workflow-language/cwltool)
@@ -103,7 +101,7 @@ System dependencies
 * Create a basic echo tool using `Rcwl` (developers only)
 * Build a basic DNAseq pipeline using `RCWL` (developers only) 
 
-## Introduction to CWL
+## Introduction to RCWL & RcwlPipelines
 
 Please see details in the slides. 
 
@@ -111,28 +109,31 @@ Please see details in the slides.
 
 ### Data resources
 
-We have prepared all the files needed in this workshop in a GitHub
-repository, and now we need to download these files to a local
-temporary folder for the demo purpose. We will also use the `path`
-below as the file path to save all intermediate files.
+We have prepared all the files needed in this workshop. By initiating
+the docker image for this workshop, you should already have it
+available in the filepath (`path`) below. We have also mounted your
+local working directory to this rstudio session (`outpath`) to store
+the intermediate or result files from running the examples.
 
 ```{r}
-path <- system.file("testdata", package = "Bioc2020RCWL")
-outpath <- "~/outdir"
+path <- "~/inst/testdata"  ## source data
+outpath <- "~/outdir"      ## output files
 ```
 
 The single cell data resource we are using today is the 1k PBMCs from
-a Healthy Donor (v3 chemistry) from 10x genomics, consisting of 1000
-Peripheral blood mononuclear cells (PBMCs) extracted from a healthy
-donor, where PBMCs are primary cells with relatively small amounts of
-RNA (~1pg RNA/cell). 
+10x genomics, consisting of 1000 Peripheral blood mononuclear cells
+(PBMCs) extracted from a healthy donor, where PBMCs are primary cells
+with relatively small amounts of RNA (~1pg RNA/cell).
 
 The source material consists of 6 FASTQ files split into two
 sequencing lanes L001 and L002, each with three reads of R1
-(barcodes), R2 (cDNA sequences), I1 (illumina lane infold). The Cell
-Ranger pipeline requires all three files to perform the demultiplexing
-and quantification, but RNA STARsolo does not require the I1 lane file
-to perform the analysis. The source files can be found
+(barcodes), R2 (cDNA sequences), I1 (illumina lane infold).  10x
+Genomics has its own processing pipeline, `Cell Ranger` to process the
+scRNA-seq outputs it produces (and requires much configuration to run
+and is significantly slower than other mappers), which requires all
+three files to perform the demultiplexing and quantification, but
+`STARsolo` does not require the I1 lane file to perform the
+analysis. The source files can be found
 [here](https://zenodo.org/record/3457880#.XxLjOvhKjvU).
 
 For this tutorial, we will use datasets sub-sampled from the source
@@ -140,6 +141,7 @@ files to contain only 15 cells instead of 1000. We have also further
 curated the data to only include reads on chromosome 21, so that the
 real execuation of our CWL tools/pipelines in _R_ can be done within
 1~2 minutes for each step. 
+
 ```
 subset15_chr21_pbmc_1k_v3_S1_L001_R1_001.fastq.gz
 subset15_chr21_pbmc_1k_v3_S1_L001_R2_001.fastq.gz
@@ -150,11 +152,11 @@ subset15_chr21_pbmc_1k_v3_S1_L002_R2_001.fastq.gz
 For the mapping, we need a “whitelist” of known cell barcodes. Here we
 used the 15 barcodes that we already subsetted. The original 737,000
 barcodes can be freely extracted from the [Cell Ranger
-pipeline](https://kb.10xgenomics.com/hc/en-us/articles/115004506263-What-is-a-barcode-whitelist)).
+pipeline](https://kb.10xgenomics.com/hc/en-us/articles/115004506263-What-is-a-barcode-whitelist).
 
-``` 
-subset15_demo_barcode.txt 
-``` 
+```
+subset15_demo_barcode.txt
+```
 
 The barcodes in the R1 FASTQ data are checked against these known cell
 barcodes in order to assign a specific read to a specific known
@@ -164,20 +166,16 @@ genome.
 
 In this tutorial we will be using hg19 (GRCh37) version of the
 human genome, and will therefore also need to use a hg19 GTF fileto
-annotate our reads (on chromosome 21 only).
+annotate our reads (on chromosome 21 only for this demo).
 
 ```
 chr21.fa
 Homo_sapiens.GRCh37.75.21.gtf
 ```
 
-10x Genomics has its own processing pipeline, `Cell Ranger` to process
-the scRNA-seq outputs it produces, but this process requires much
-configuration to run and is significantly slower than other mappers.
-
 ### `Rcwl` version of scRNA-seq preprocessing steps
 
-In this tutorial, we are trying to reproduce the [GALAXY
+In this tutorial, we are basically trying to reproduce the [GALAXY
 pipeline](https://galaxyproject.github.io/training-material/topics/transcriptomics/tutorials/scrna-preprocessing-tenx/tutorial.html#producing-a-count-matrix-from-fastq)
 for scRNA-seq data pre-processing. We will use `STARsolo` to produce a
 count matrix from FASTQ, and `DropletUtils` to produce a high quality
@@ -185,22 +183,24 @@ count matrix with feature/cell annotation files saved in an R object
 of `SingleCellExperiment`. Before these 2 steps, we have also added a
 one-time indexing step in our workshop.
 
+With `Rcwl`, we can easily write cwl tools and pipelines
+programmatically in _R_ (the other vignette called "Bioc2020CWL4devel"
+covers more of this topic for developers). For usage of more than a
+hundred pre-built and tested tools/pipelines in `RcwlPipelines`, all
+we need to do is as simple as: 1) Search and load the tools/pipelines,
+2) assign values for each of the defined parameters, 3) execute the
+command. All steps are done programmatically in _R_, and then we can
+get the results ready in the user-specified directory.
+
 #### Loading the tools
 
-With `Rcwl`, we can easily write cwl tools and pipelines
-programmatically in _R_ (Will cover more of this topic later for
-developers). While we already have the _R_ version of many command
-line tools in `RcwlPipelines`, all we need to do is: 1) Search and
-load the tools/pipelines, 2) assign values for each of the defined
-parameters, 3) execute the command, and 4) get results saved in
-user-specified directory, all within _R_.
-
 Here we show the usage of 3 core functions: `cwlUpdate`, `cwlSearch`
-and `cwlInstall`. 
+and `cwlInstall` for updating, searching, and loading the needed tools
+or pipelines in _R_.
 
 - `cwlUpdate`
 
-The `cwlUpdate` syncs the current Rcwl recipes and return a
+The `cwlUpdate` syncs the current `Rcwl` recipes and return a
 `BiocFileCache` object which contains the most updated Rcwl recipes.
 
 ```{r}
@@ -224,10 +224,10 @@ table(bfcinfo(atls)$Type)
 
 - `cwlSearch`
 
-We can use keywords to search for any specific tools/pipelines of
+We can use (multiple) keywords to search for any specific tools/pipelines of
 interest, which internally search the keywords against the
 BiocFileCache tibble in columns of "rname", "rpath", "fpath",
-"Command" and "Containers". Multiple keywords are allowed.
+"Command" and "Containers". 
 
 ```{r}
 tls <- cwlSearch(c("STAR", "index"))
@@ -236,13 +236,15 @@ data.frame(tls)
 
 - `cwlInstall`
 
-The last core function is `cwlInstall` which sources the Rcwl script
+The last core function is `cwlInstall` which sources the `Rcwl` script
 for the interested tool/pipeline into the _R_ working environment.
 
 ```{r}
 cwlInstall(tls$rname[2])  ## "tl_STARindex"
 cwlInstall(tls$fpath[2])  ## equivalent to the above. 
 STARindex
+```
+```{r}
 cwlVersion(STARindex)
 inputs(STARindex)
 outputs(STARindex)
@@ -272,6 +274,7 @@ using `runCWL` function.
 inputs(STARindex)
 STARindex$genomeFastaFiles <- file.path(path, "chr21.fa")
 STARindex$sjdbGTFfile <- file.path(path, "Homo_sapiens.GRCh37.75.21.gtf")
+writeCWL(STARindex, prefix = file.path(outpath, "STARindex"))
 ```
 
 ```{r, eval=FALSE}
@@ -283,7 +286,7 @@ dir(file.path(outpath, "STARindex_output"), recursive = TRUE)
 ```
 
 Now that the output files are generated in the folder of
-"STARindex_output" under `outpath`. These results are ready to pass to
+"STARindex_output/STARindex" under `outpath`. These results are ready to pass to
 the next tool for single cell read alignment.
 
 #### Alignment
@@ -307,12 +310,13 @@ inputs(STARsolo)
 cdna.fastq <- file.path(path, list.files(path, pattern = "_R2_"))
 cb.fastq <- file.path(path, list.files(path, pattern = "_R1_"))
 cblist <- file.path(path, "subset15_demo_barcode.txt")
-genomeDir <- file.path(path, "STARindex_output/STARindex")
+genomeDir <- file.path(outpath, "STARindex_output/STARindex")
 
 STARsolo$readFilesIn_cdna <- cdna.fastq
 STARsolo$readFilesIn_cb <- cb.fastq
 STARsolo$whiteList <- cblist
 STARsolo$genomeDir <- genomeDir
+STARsolo
 ```
 
 ```{r, eval=FALSE}
@@ -350,7 +354,7 @@ Now that we get 2 output files:
 - The `SingleCellExperiment` object which has filtered out unqualified cells.  
 
 ```{r, eval=FALSE}
-#> Biobase::openPDF(file.path(path, "dropletUtils_output/diagnostics.pdf"))
+#> Biobase::openPDF(file.path(outpath, "dropletUtils_output/diagnostics.pdf"))
 sce <- readRDS(file.path(outpath, "dropletUtils_output/sce_filtered.rds"))
 sce
 ```
@@ -358,7 +362,10 @@ sce
 
 Alternatively and more easily, we can also run the pipeline that was
 available in `RcwlPipelines` which has integrated the `STARsolo` and
-`DropletUtils` for a streamlined preprocessing analysis within _R_.
+`DropletUtils` for a streamlined pre-processing analysis within _R_.
+
+In a pipeline, we only need to assign input values for the whole pipeline, not individual tools involved. The input and output between each steps are pre-defined in the pipeline to ensure a smooth passing.  
+
 
 ```{r, eval=FALSE}
 cwlInstall("pl_STARsoloDropletUtils")
@@ -367,17 +374,18 @@ STARsoloDropletUtils$fastq_cdna <- cdna.fastq
 STARsoloDropletUtils$fastq_cb <- cb.fastq
 STARsoloDropletUtils$genomeDir <- file.path(outpath, "STARindex_output/STARindex")
 STARsoloDropletUtils$whiteList <- cblist
-STARsoloDropletUtils$runThreadN <- 2
+STARsoloDropletUtils$runThreadN <- 1
 ```
 
 ```{r, eval=FALSE}
 runCWL(STARsoloDropletUtils, outdir = file.path(outpath, "scpipeline_output"),
-       showLog = TRUE)
+       docker = "singularity", showLog = TRUE)
+```
+
+The overall output of the pipeline was pre-defined to glob the
+important files from separate steps.
+
+```{r, eval=FALSE}
 dir(file.path(outpath, "scpipeline_output"), recursive = TRUE)
 outputs(STARsoloDropletUtils)
 ```
-
-### todo:
-- explain the output globs. 
-- Explain the cwl files. (config, values)
-- test docker. 
