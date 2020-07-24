@@ -37,7 +37,7 @@ from our tutorial.
 
 ```
 docker pull liubuntu/bioc2020rcwl:latest
-docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged bioc2020rcwl
+docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged liubuntu/bioc2020rcwl
 ```
 
 Then open http://localhost:8787 in your browser and login with
