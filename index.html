@@ -54,7 +54,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Bioc2020RCWL</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
 <a href="#docker-instructions" class="anchor"></a>Docker instructions:</h2>
 <p>First, we need to initiate the docker. The follow command will mount the local current directory (<code>$(pwd)</code>) to the docker container (<code>/home/rstudio/outdir</code>), which is required to store the output files from our tutorial.</p>
 <pre><code>docker pull liubuntu/bioc2020rcwl:latest
-docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged bioc2020rcwl</code></pre>
+docker run -e PASSWORD=bioconductor -p 8787:8787 -v $(pwd):/home/rstudio/outdir -d --privileged liubuntu/bioc2020rcwl</code></pre>
 <p>Then open <a href="http://localhost:8787" class="uri">http://localhost:8787</a> in your browser and login with username “rstudio” and password “bioconductor”. Within rstudio, you can open the workshop script <code>vignettes/Bioc2020RCWL.Rmd</code>.</p>
 <p>You can also look at the html file by:</p>
 <pre><code><a href="https://rdrr.io/r/utils/browseVignettes.html">browseVignettes(package = "Bioc2020RCWL")</a></code></pre>
@@ -148,6 +148,7 @@ docker stop &lt;CONTAINER ID&gt; # or, &lt;NAMES&gt; - Stop a container </code><
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Qian Liu <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1456-5099" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Qiang Hu <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -156,7 +157,7 @@ docker stop &lt;CONTAINER ID&gt; # or, &lt;NAMES&gt; - Stop a container </code><
 
 
       <footer><div class="copyright">
-  <p>Developed by Qian Liu.</p>
+  <p>Developed by Qian Liu, Qiang Hu.</p>
 </div>
 
 <div class="pkgdown">
