@@ -25,8 +25,8 @@ complex bioinformatics analysis. Here we included a scRNAseq
 preprocessing pipeline which uses `STARsolo` for alignment and
 quantification, and `DropletUtils` for filtering raw gene-barcode
 matrix and removing empty droplets. This pipeline demonstrates the
-typical use case of our packages. More details for usage and examples
-are available on Rcwl website: https://hubentu.github.io/Rcwl/.
+typical use case of our packages. The webpage for this workshop is
+available at: https://liubuntu.github.io/Bioc2020RCWL/ 
 
 ## Docker instructions:
 
