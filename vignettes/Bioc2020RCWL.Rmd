@@ -26,22 +26,22 @@ knitr::opts_chunk$set(message = FALSE)
 
 This workshop introduces the Bioconductor toolchain for usage and
 development of reproducible bioinformatics pipelines using packages of
-Rcwl and RcwlPipelines. The Common Workflow Language (CWL) is an open
-standard for the development of data analysis workflows that is
+`Rcwl` and `RcwlPipelines`. The Common Workflow Language (CWL) is an
+open standard for the development of data analysis workflows that is
 portable and scalable across different tools and working
-environments. Rcwl provides a simple way to wrap command line tools
+environments. `Rcwl` provides a simple way to wrap command line tools
 and build CWL data analysis pipelines programmatically within R. It
 increases the ease of use, development, and maintenance of CWL
 pipelines, and offers a higher performance by intuitively supporting
 parallel work with high performance computing (HPC). More than a
 hundred of pre-built and tested CWL tool/pipeline recipes are included
-in RcwlPipelines. These tools and pipelines are highly modularized for
-easy customization of complex bioinformatics analysis. Here we
-included a scRNAseq preprocessing pipeline that uses `STARsolo` for
-alignment and quantification, and `DropletUtils` for filtering raw
-gene-barcode matrix and removing empty droplets. This pipeline
-demonstrates the typical use case of our packages. More details for
-usage and examples are available on Rcwl website:
+in `RcwlPipelines` package. These tools and pipelines are highly
+modularized for easy customization of complex bioinformatics
+analysis. Here we included a scRNAseq preprocessing pipeline that uses
+`STARsolo` for alignment and quantification, and `DropletUtils` for
+filtering raw gene-barcode matrix and removing empty droplets. This
+pipeline demonstrates the typical use case of our packages. More
+details for usage and examples are available on Rcwl website:
 https://hubentu.github.io/Rcwl/.
 
 
@@ -123,7 +123,7 @@ dir.create("outdir", showWarnings = FALSE)
 ```
 
 The single cell data resource we are using today is the 1k PBMCs from
-10x genomics, consisting of 1000 Peripheral blood mononuclear cells
+10x genomics, which consists of 1000 Peripheral blood mononuclear cells
 (PBMCs) extracted from a healthy donor, where PBMCs are primary cells
 with relatively small amounts of RNA (~1pg RNA/cell).
 
@@ -251,12 +251,6 @@ cwlInstall(tls$rname[2])  ## "tl_STARindex"
 cwlInstall(tls$fpath[2])  ## equivalent to the above. 
 STARindex
 ```
-```{r}
-cwlVersion(STARindex)
-inputs(STARindex)
-outputs(STARindex)
-requirements(STARindex)
-```
 
 Now the Rcwl version of `STARindex` is successfully loaded into _R_
 and ready to use. 
@@ -277,6 +271,15 @@ same indexing within _R_ which was internally passed as a cwl
 script. What we need to do is assign values for the input parameters,
 and execute the cwl script using `runCWL` function.
 
+```{r} 
+cwlVersion(STARindex)
+inputs(STARindex)
+outputs(STARindex)
+requirements(STARindex)
+```
+
+Now let's assign values for these parameters. 
+
 ```{r, eval=FALSE}
 inputs(STARindex)
 STARindex$genomeFastaFiles <- file.path(path, "chr21.fa")
@@ -284,6 +287,11 @@ STARindex$sjdbGTFfile <- file.path(path, "Homo_sapiens.GRCh37.75.21.gtf")
 STARindex  ## values (filepatt) are added
 writeCWL(STARindex, prefix = file.path(outpath, "STARindex"))  ## 2 files .cwl/.yml 
 ```
+
+The `runCWL(docker = )` takes 3 values: 
+- TRUE: on the HPC, without the permission to pre-install all command line tools needed.   
+- FALSE: on your local computer, with all command line tools pre-installed. 
+- "singularity": On the HPC, no pre-installed tools, and without support of docker. 
 
 ```{r, eval=FALSE}
 system.time(
@@ -346,12 +354,10 @@ representative of the Cell Ranger pipeline.
 
 Since CWL doesn't support the integration of _R_ packages or _R_
 function, and lacks interoperability of very widely used _R_ tools for
-downstream data analysis. 
-
-The support for integration of _R_ functions in `Rcwl` is a very
-unique feature, where we can easily connect the upstream data
-preprocessing steps (previously based on command line tools) and the
-downstream data analysis steps. 
+downstream data analysis. The support for integration of _R_ functions
+in `Rcwl` is a very unique feature, where we can easily connect the
+upstream data preprocessing steps (previously based on command line
+tools) and the downstream data analysis steps.
 
 The idea here is to put anything you want to do into an _R_ function,
 with specified arguments for input and output files, then it's ready
@@ -404,7 +410,7 @@ cwlInstall("pl_STARsoloDropletUtils")
 plotCWL(STARsoloDropletUtils)
 ```
 
-```{r}
+```{r, eval=FALSE}
 inputs(STARsoloDropletUtils)
 STARsoloDropletUtils$fastq_cdna <- cdna.fastq
 STARsoloDropletUtils$fastq_cb <- cb.fastq
