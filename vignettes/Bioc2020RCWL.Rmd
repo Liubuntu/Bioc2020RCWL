@@ -352,12 +352,12 @@ To get a high quality count matrix we must apply the `DropletUtils`
 tool, which will produce a filtered dataset that is more
 representative of the Cell Ranger pipeline.
 
-Since CWL doesn't support the integration of _R_ packages or _R_
-function, and lacks interoperability of very widely used _R_ tools for
-downstream data analysis. The support for integration of _R_ functions
-in `Rcwl` is a very unique feature, where we can easily connect the
-upstream data preprocessing steps (previously based on command line
-tools) and the downstream data analysis steps.
+Since CWL itself doesn't support the integration of _R_ packages or
+_R_ function, and lacks interoperability of very widely used _R_ tools
+for downstream data analysis. This is a unique feature for `Rcwl`,
+where we can easily connect the upstream data preprocessing steps
+(previously based on command line tools) and the downstream data
+analysis steps (heavily done in _R/Bioconductor_).
 
 The idea here is to put anything you want to do into an _R_ function,
 with specified arguments for input and output files, then it's ready
@@ -366,7 +366,7 @@ to be wrapped as an `Rcwl` tools for execution.
 For example, in using the package `DropletUtils`
 (https://github.com/hubentu/RcwlRecipes/blob/master/Rcwl/tl_DropletUtils.R),
 we mainly did 3 things: 1) use the `read10xCounts` function to read
-the output files from previous step and convert into a
+the output files from the alignment step and convert into a
 `SingleCellExperiment` object. 2) Calculate the barcode ranks and
 plotting. 3) calcualte the empty droplets and plotting.
 
@@ -388,7 +388,7 @@ dir(file.path(outpath, "dropletUtils_output"))
 
 Now that we get 2 output files:
 
-- The pdf file with 2 diagnostic figures: Barcode ranks, and empty droplets. Details for each diagnostic figures please refer to the [DropletUtils vignette](https://bioconductor.org/packages/release/bioc/vignettes/DropletUtils/inst/doc/DropletUtils.html)  
+- The pdf file with 2 diagnostic figures: Barcode ranks, and empty droplets. Details for interpretation of each diagnostic figure please refer to the [DropletUtils vignette](https://bioconductor.org/packages/release/bioc/vignettes/DropletUtils/inst/doc/DropletUtils.html)  
 - The `SingleCellExperiment` object which has filtered out unqualified cells.  
 
 ```{r, eval=FALSE}
@@ -396,11 +396,15 @@ Now that we get 2 output files:
 sce <- readRDS(file.path(outpath, "dropletUtils_output/sce_filtered.rds"))
 sce
 ```
+
 ### scRNA-seq preprocessing pipeline
 
-Alternatively and more easily, we can also run the pipeline that was
-available in `RcwlPipelines` which has integrated the `STARsolo` and
-`DropletUtils` for a streamlined pre-processing analysis within _R_.
+Alternatively and more easily, we can connect these tools and make a
+pipeline, which is already available in `RcwlPipelines` called
+`pl_STARsoloDropletUtils`. It has integrated the `STARsolo` and
+`DropletUtils` for a streamlined pre-processing analysis within
+_R_. These pipelines are ready for customization for your own
+research.
 
 In a pipeline, we only need to assign input values for the whole pipeline, not individual tools involved. The input and output between each step are pre-defined in the pipeline to ensure a smooth passing.  
 
@@ -447,17 +451,18 @@ CWL tools/pipelines with _R_ for the previously command line tools as
 well as customized _R_ functions. The pre-built tools and pipelines
 are highly modularized and optimized for easy customization for
 specific data analysis needs. These packages are under active
-development, and we welcome any question for the functionalities and
+development, and we welcome any question for the functionalities,
 feature requests (support site, email), and issue reports
 (https://github.com/hubentu/Rcwl/issues,
 https://github.com/hubentu/RcwlPipelines/issues). 
+importantly, pull requests for adding your sp
 
-We are trying to make this project as a community effort for
-developing and sharing of specific sets of tools and pipelines in
-their bioinformatics domains. Please feel free to make your pull
-requests for your recipes
-[here](https://github.com/hubentu/RcwlRecipes) and we are happy to add
-them into the collection.
+Most importantly, we are trying to make this project as a community
+effort for developing and sharing of specific sets of tools and
+pipelines in their bioinformatics domains. We look forward to any
+collaborations in developing the pipelines and please feel free to
+make your pull requests for your recipes
+[here](https://github.com/hubentu/RcwlRecipes). 
 
 ### Acknowledgement
 
