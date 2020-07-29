@@ -119,7 +119,7 @@ the intermediate or result files from running the examples.
 ```{r}
 path <- "~/inst/testdata"  ## source data
 outpath <- "~/outdir"      ## output files
-dir.create("outdir", showWarnings = FALSE)
+dir.create(outpath, showWarnings = FALSE)
 ```
 
 The single cell data resource we are using today is the 1k PBMCs from
@@ -289,9 +289,10 @@ writeCWL(STARindex, prefix = file.path(outpath, "STARindex"))  ## 2 files .cwl/.
 ```
 
 The `runCWL(docker = )` takes 3 values: 
-- TRUE: on the HPC, without the permission to pre-install all command line tools needed.   
+- TRUE: on the HPC, runtime is docker, and will pull docker images for
+  the required command line tools.
 - FALSE: on your local computer, with all command line tools pre-installed. 
-- "singularity": On the HPC, no pre-installed tools, and without support of docker. 
+- "singularity": On the HPC, runtime is singularity. 
 
 ```{r, eval=FALSE}
 system.time(
@@ -353,11 +354,10 @@ tool, which will produce a filtered dataset that is more
 representative of the Cell Ranger pipeline.
 
 Since CWL itself doesn't support the integration of _R_ packages or
-_R_ function, and lacks interoperability of very widely used _R_ tools
-for downstream data analysis. This is a unique feature for `Rcwl`,
-where we can easily connect the upstream data preprocessing steps
-(previously based on command line tools) and the downstream data
-analysis steps (heavily done in _R/Bioconductor_).
+_R_ function, this is a unique feature for `Rcwl`, where we can easily
+connect the upstream data preprocessing steps (previously based on
+command line tools) and the downstream data analysis steps (heavily
+done in _R/Bioconductor_).
 
 The idea here is to put anything you want to do into an _R_ function,
 with specified arguments for input and output files, then it's ready
@@ -389,7 +389,7 @@ dir(file.path(outpath, "dropletUtils_output"))
 Now that we get 2 output files:
 
 - The pdf file with 2 diagnostic figures: Barcode ranks, and empty droplets. Details for interpretation of each diagnostic figure please refer to the [DropletUtils vignette](https://bioconductor.org/packages/release/bioc/vignettes/DropletUtils/inst/doc/DropletUtils.html)  
-- The `SingleCellExperiment` object which has filtered out unqualified cells.  
+- The `SingleCellExperiment` object which has filtered out unqualified cells and analysis ready.   
 
 ```{r, eval=FALSE}
 #> Biobase::openPDF(file.path(outpath, "dropletUtils_output/diagnostics.pdf"))
@@ -454,8 +454,7 @@ specific data analysis needs. These packages are under active
 development, and we welcome any question for the functionalities,
 feature requests (support site, email), and issue reports
 (https://github.com/hubentu/Rcwl/issues,
-https://github.com/hubentu/RcwlPipelines/issues). 
-importantly, pull requests for adding your sp
+https://github.com/hubentu/RcwlPipelines/issues).
 
 Most importantly, we are trying to make this project as a community
 effort for developing and sharing of specific sets of tools and
