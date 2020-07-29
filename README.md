@@ -3,8 +3,9 @@
 
 ## Instructor(s) name(s) and contact information
 
-* [Qian Liu](https://github.com/liubuntu) (Qian.Liu@roswellpark.org)
-* [Qiang Hu](https://github.com/hubentu) (Qiang.Hu@roswellpark.org)
+* [Qian Liu](https://github.com/liubuntu) (Qian.Liu@roswellpark.org) [twitter](https://twitter.com/QianLiu28878838)
+* [Qiang Hu](https://github.com/hubentu) (Qiang.Hu@roswellpark.org) [twitter](https://twitter.com/hubentu)
+* [Slack channel]: community-bioc/#rcwl
 
 ## Workshop Description
 

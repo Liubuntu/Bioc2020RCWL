@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEncoding[utf8]{inputenc}
 ---
 
-```{r}
+```{r, echo=FALSE}
 knitr::opts_chunk$set(message = FALSE)
 ```
 
