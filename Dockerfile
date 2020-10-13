@@ -5,7 +5,7 @@ WORKDIR /home/rstudio
 COPY --chown=rstudio:rstudio . /home/rstudio/
 
 RUN apt-get update && \
-    apt-get install -y libglpk-dev python3-pip python3-dev build-essential libssl-dev uuid-dev libgpgme11-dev squashfs-tools libseccomp-dev wget pkg-config git cryptsetup bwa samtools && \
+    apt-get install -y libglpk-dev python3-pip python3-dev build-essential libssl-dev libssh2-1-dev uuid-dev libgpgme11-dev squashfs-tools libseccomp-dev wget pkg-config git cryptsetup bwa samtools && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
