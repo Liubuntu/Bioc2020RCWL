@@ -1,10 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   Bioc2020RCWL: Bioc2020RCWL.html
   Bioc2020RCWL4devel: Bioc2020RCWL4devel.html
-last_built: 2020-07-29T18:33Z
+last_built: 2020-10-13T23:33Z
 urls:
   reference: https://liubuntu.github.io/Bioc2020Rcwl/reference
   article: https://liubuntu.github.io/Bioc2020Rcwl/articles
