@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Bioc2020RCWL</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -268,33 +268,33 @@
 <p>First Let’s check the output file to make sure the command was executed successfully.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit">
 <span class="va">r1</span><span class="op">$</span><span class="va">output</span></pre></div>
-<pre><code>## [1] "/tmp/RtmpZFmZkJ/69218c2037431ab47dfe50080c6ec459ad6ffe01"</code></pre>
+<pre><code>## [1] "/tmp/RtmpZjf3Pi/962b12fad463694ac70325deb4a59990b82ba543"</code></pre>
 <div class="sourceCode" id="cb24"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">r1</span><span class="op">$</span><span class="va">output</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "Hello World!"</code></pre>
 <p>Here is the actual command line code (genearted from running <code>runCWL</code>) that was executed by <code>cwltools</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit">
 <span class="va">r1</span><span class="op">$</span><span class="va">command</span></pre></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file5314a9876ab.cwl] /tmp/_6i400y5$ echo \\"     
-## [2] "    'Hello World!' &gt; /tmp/_6i400y5/69218c2037431ab47dfe50080c6ec459ad6ffe01"</code></pre>
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file4cffa6f1c0.cwl] /tmp/vopg2q67$ echo \\"      
+## [2] "    'Hello World!' &gt; /tmp/vopg2q67/962b12fad463694ac70325deb4a59990b82ba543"</code></pre>
 <p>The log shows the details of how the <code>cwltool</code> works with CWL scripts.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit">
 <span class="va">r1</span><span class="op">$</span><span class="va">log</span></pre></div>
-<pre><code>##  [1] "\033[1;30mINFO\033[0m /usr/local/bin/cwltool 3.0.20200807132242"                                                     
-##  [2] "\033[1;30mINFO\033[0m Resolved '/tmp/RtmpZFmZkJ/file5314a9876ab.cwl' to 'file:///tmp/RtmpZFmZkJ/file5314a9876ab.cwl'"
-##  [3] "\033[1;30mINFO\033[0m [job file5314a9876ab.cwl] /tmp/_6i400y5$ echo \\"                                              
-##  [4] "    'Hello World!' &gt; /tmp/_6i400y5/69218c2037431ab47dfe50080c6ec459ad6ffe01"                                         
-##  [5] "\033[1;30mINFO\033[0m [job file5314a9876ab.cwl] completed success"                                                   
-##  [6] "{"                                                                                                                   
-##  [7] "    \"output\": {"                                                                                                   
-##  [8] "        \"location\": \"file:///tmp/RtmpZFmZkJ/69218c2037431ab47dfe50080c6ec459ad6ffe01\","                          
-##  [9] "        \"basename\": \"69218c2037431ab47dfe50080c6ec459ad6ffe01\","                                                 
-## [10] "        \"class\": \"File\","                                                                                        
-## [11] "        \"checksum\": \"sha1$a0b65939670bc2c010f4d5d6a0b3e4e4590fb92b\","                                            
-## [12] "        \"size\": 13,"                                                                                               
-## [13] "        \"path\": \"/tmp/RtmpZFmZkJ/69218c2037431ab47dfe50080c6ec459ad6ffe01\""                                      
-## [14] "    }"                                                                                                               
-## [15] "}"                                                                                                                   
+<pre><code>##  [1] "\033[1;30mINFO\033[0m /usr/local/bin/cwltool 3.0.20200807132242"                                                   
+##  [2] "\033[1;30mINFO\033[0m Resolved '/tmp/RtmpZjf3Pi/file4cffa6f1c0.cwl' to 'file:///tmp/RtmpZjf3Pi/file4cffa6f1c0.cwl'"
+##  [3] "\033[1;30mINFO\033[0m [job file4cffa6f1c0.cwl] /tmp/vopg2q67$ echo \\"                                             
+##  [4] "    'Hello World!' &gt; /tmp/vopg2q67/962b12fad463694ac70325deb4a59990b82ba543"                                       
+##  [5] "\033[1;30mINFO\033[0m [job file4cffa6f1c0.cwl] completed success"                                                  
+##  [6] "{"                                                                                                                 
+##  [7] "    \"output\": {"                                                                                                 
+##  [8] "        \"location\": \"file:///tmp/RtmpZjf3Pi/962b12fad463694ac70325deb4a59990b82ba543\","                        
+##  [9] "        \"basename\": \"962b12fad463694ac70325deb4a59990b82ba543\","                                               
+## [10] "        \"class\": \"File\","                                                                                      
+## [11] "        \"checksum\": \"sha1$a0b65939670bc2c010f4d5d6a0b3e4e4590fb92b\","                                          
+## [12] "        \"size\": 13,"                                                                                             
+## [13] "        \"path\": \"/tmp/RtmpZjf3Pi/962b12fad463694ac70325deb4a59990b82ba543\""                                    
+## [14] "    }"                                                                                                             
+## [15] "}"                                                                                                                 
 ## [16] "\033[1;30mINFO\033[0m Final process status is success"</code></pre>
 <p>Internally, the <code>runCWL</code> generates two scripts: the “.cwl” configuration file and the “.yml” file containing input parameter values. The location and prefix name of these two files are defined with the argument <code>prefix</code>, with the default value as <code><a href="https://rdrr.io/r/base/tempfile.html">tempfile()</a></code>.</p>
 <p>The <code>cwltool</code> parses the two scripts and translates them into shell command shown in <code>r1$command</code>. Since the output prameters are not defined in the <code>echo</code> object, so the output was returned to <strong>stdout</strong> by default with the filepath in <code>r1$output</code>.</p>
@@ -344,13 +344,13 @@
 <span class="va">echoA</span><span class="op">$</span><span class="va">file</span> <span class="op">&lt;-</span> <span class="va">tmpfile</span>
 <span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span><span class="op">(</span><span class="va">echoA</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">r2</span><span class="op">$</span><span class="va">command</span></pre></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file53119001608.cwl] /tmp/mfvkhuxj$ echo \\"                
-## [2] "    --file=/tmp/tmprmetpjj2/stgd06c8f54-6d11-473c-bae1-36c6f46a2f73/file53167727f76 \\"
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file4cf7985c3fe.cwl] /tmp/zkhynmwn$ echo \\"                
+## [2] "    --file=/tmp/tmpnd1bwl_n/stg2fa095a3-f489-4959-9b86-484720dab8cd/file4cf511526d0 \\"
 ## [3] "    -f \\"                                                                             
 ## [4] "    -i \\"                                                                             
 ## [5] "    1 \\"                                                                              
 ## [6] "    -s \\"                                                                             
-## [7] "    Hello &gt; /tmp/mfvkhuxj/output.txt"</code></pre>
+## [7] "    Hello &gt; /tmp/zkhynmwn/output.txt"</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Array Inputs</li>
 </ol>
@@ -385,7 +385,7 @@
 <div class="sourceCode" id="cb37"><pre class="downlit">
 <span class="va">r3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span><span class="op">(</span><span class="va">echoB</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">r3</span><span class="op">$</span><span class="va">command</span></pre></div>
-<pre><code>## [1] "\033[1;30mINFO\033[0m [job file531412c1647.cwl] /tmp/596kbut7$ echo \\"
+<pre><code>## [1] "\033[1;30mINFO\033[0m [job file4cf443da4fe.cwl] /tmp/xuajzthq$ echo \\"
 ## [2] "    -A \\"                                                             
 ## [3] "    a \\"                                                              
 ## [4] "    b \\"                                                              
@@ -393,7 +393,7 @@
 ## [6] "    -B=a \\"                                                           
 ## [7] "    -B=b \\"                                                           
 ## [8] "    -B=c \\"                                                           
-## [9] "    -C=a,b,c &gt; /tmp/596kbut7/cc92d2fd99fbc2a93f95b476bce59b96a654fc38"</code></pre>
+## [9] "    -C=a,b,c &gt; /tmp/xuajzthq/57bdf92ebd35aaf8fb67b10f2cc69b021f19dc9e"</code></pre>
 <div class="sourceCode" id="cb39"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">r3</span><span class="op">$</span><span class="va">output</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "-A a b c -B=a -B=b -B=c -C=a,b,c"</code></pre>
@@ -461,7 +461,7 @@
 <span class="va">gz1</span><span class="op">$</span><span class="va">zfile</span> <span class="op">&lt;-</span> <span class="va">zzfil</span>
 <span class="va">r4a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span><span class="op">(</span><span class="va">gz1</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">r4a</span><span class="op">$</span><span class="va">output</span></pre></div>
-<pre><code>## [1] "/tmp/RtmpZFmZkJ/sample.R"</code></pre>
+<pre><code>## [1] "/tmp/RtmpZjf3Pi/sample.R"</code></pre>
 <div class="sourceCode" id="cb51"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">r4a</span><span class="op">$</span><span class="va">output</span><span class="op">)</span></pre></div>
 <pre><code>## [1] "sample(1:10, 5)"</code></pre>
@@ -494,7 +494,7 @@
 <span class="va">touch</span><span class="op">$</span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a.txt"</span>, <span class="st">"b.gz"</span>, <span class="st">"c.txt"</span><span class="op">)</span>
 <span class="va">r5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/runCWL.html">runCWL</a></span><span class="op">(</span><span class="va">touch</span>, outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">r5</span><span class="op">$</span><span class="va">output</span></pre></div>
-<pre><code>## [1] "/tmp/RtmpZFmZkJ/a.txt" "/tmp/RtmpZFmZkJ/c.txt"</code></pre>
+<pre><code>## [1] "/tmp/RtmpZjf3Pi/a.txt" "/tmp/RtmpZjf3Pi/c.txt"</code></pre>
 </div>
 </div>
 <div id="run-approaches" class="section level3">
@@ -560,7 +560,7 @@
 <span class="va">inputList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>option <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"option1"</span>, <span class="st">"option2"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">app</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Rcwl/man/cwlShiny.html">cwlShiny</a></span><span class="op">(</span><span class="va">webEcho</span>, <span class="va">inputList</span>, upload <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></pre></div>
-<img src="../../../../tmp/RtmpvndAgx/temp_libpath4902e50b82/Bioc2020RCWL/vignettes/cwlShiny.png" title="fig:" alt="shinyApp"><div align="center">
+<img src="../../../../tmp/Rtmp3qRWI7/temp_libpath42e3945b207/Bioc2020RCWL/vignettes/cwlShiny.png" title="fig:" alt="shinyApp"><div align="center">
 <strong>Figure 1:</strong> Shiny webApp for <code>webEcho</code>.
 </div>
 <p></p>
@@ -603,25 +603,25 @@
 <span class="va">tools</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RcwlPipelines/man/cwlUpdate.html">cwlUpdate</a></span><span class="op">(</span>cachePath <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">tools</span></pre></div>
 <pre><code>## class: BiocFileCache
-## bfccache: /tmp/RtmpZFmZkJ/file5313fc2e97e
-## bfccount: 129
+## bfccache: /tmp/RtmpZjf3Pi/file4cf26d2d8cb
+## bfccount: 130
 ## For more information see: bfcinfo() or bfcquery()</code></pre>
 <div class="sourceCode" id="cb65"><pre class="downlit">
 <span class="fu">bfcinfo</span><span class="op">(</span><span class="va">tools</span><span class="op">)</span>  <span class="co">## show a tibble list with all available tools. Use</span></pre></div>
-<pre><code>## # A tibble: 129 x 13
+<pre><code>## # A tibble: 130 x 13
 ##    rid   rname create_time access_time rpath rtype fpath last_modified_t… etag 
 ##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;
-##  1 BFC1  pl_a… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  2 BFC2  pl_A… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  3 BFC3  pl_B… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  4 BFC4  pl_b… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  5 BFC5  pl_b… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  6 BFC6  pl_b… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  7 BFC7  pl_C… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  8 BFC8  pl_G… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-##  9 BFC9  pl_G… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-## 10 BFC10 pl_h… 2020-10-13… 2020-10-13… /tmp… local /tmp…               NA &lt;NA&gt; 
-## # … with 119 more rows, and 4 more variables: expires &lt;dbl&gt;, Type &lt;chr&gt;,
+##  1 BFC1  pl_a… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  2 BFC2  pl_A… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  3 BFC3  pl_B… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  4 BFC4  pl_b… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  5 BFC5  pl_b… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  6 BFC6  pl_b… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  7 BFC7  pl_C… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  8 BFC8  pl_G… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+##  9 BFC9  pl_G… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+## 10 BFC10 pl_h… 2020-10-15… 2020-10-15… /tmp… local /tmp…               NA &lt;NA&gt; 
+## # … with 120 more rows, and 4 more variables: expires &lt;dbl&gt;, Type &lt;chr&gt;,
 ## #   Command &lt;chr&gt;, Container &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb67"><pre class="downlit">
                 <span class="co">## "methods(class="BiocFileCache")" to see all</span>
@@ -629,15 +629,15 @@
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="fu">bfcinfo</span><span class="op">(</span><span class="va">tools</span><span class="op">)</span><span class="op">$</span><span class="va">Type</span><span class="op">)</span> </pre></div>
 <pre><code>## 
 ## pipeline     tool 
-##       26      103</code></pre>
+##       26      104</code></pre>
 <div class="sourceCode" id="cb69"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="fu">bfcinfo</span><span class="op">(</span><span class="va">tools</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></pre></div>
 <pre><code>##    rid         rname         create_time         access_time
-## 1 BFC1 pl_alignMerge 2020-10-13 23:34:46 2020-10-13 23:34:46
+## 1 BFC1 pl_alignMerge 2020-10-15 18:55:31 2020-10-15 18:55:31
 ##                                                                     rpath rtype
-## 1 /tmp/RtmpZFmZkJ/file5313fc2e97e/RcwlRecipes-master/Rcwl/pl_alignMerge.R local
+## 1 /tmp/RtmpZjf3Pi/file4cf26d2d8cb/RcwlRecipes-master/Rcwl/pl_alignMerge.R local
 ##                                                                     fpath
-## 1 /tmp/RtmpZFmZkJ/file5313fc2e97e/RcwlRecipes-master/Rcwl/pl_alignMerge.R
+## 1 /tmp/RtmpZjf3Pi/file4cf26d2d8cb/RcwlRecipes-master/Rcwl/pl_alignMerge.R
 ##   last_modified_time etag expires     Type                Command Container
 ## 1                 NA &lt;NA&gt;      NA pipeline bwaAlign + mergeBamDup      &lt;NA&gt;</code></pre>
 <ol start="2" style="list-style-type: decimal">
@@ -688,12 +688,12 @@
 <pre><code>## # A tibble: 6 x 4
 ##   rname      rpath                             Command      Container           
 ##   &lt;chr&gt;      &lt;chr&gt;                             &lt;chr&gt;        &lt;chr&gt;               
-## 1 tl_bwa_in… /tmp/RtmpZFmZkJ/file5313fc2e97e/… bwa index    biocontainers/bwa:v…
-## 2 tl_bwa     /tmp/RtmpZFmZkJ/file5313fc2e97e/… bwa mem      biocontainers/bwa:v…
-## 3 tl_markdup /tmp/RtmpZFmZkJ/file5313fc2e97e/… picard Mark… quay.io/biocontaine…
-## 4 tl_sam2bam /tmp/RtmpZFmZkJ/file5313fc2e97e/… samtools vi… biocontainers/samto…
-## 5 tl_samtoo… /tmp/RtmpZFmZkJ/file5313fc2e97e/… samtools in… biocontainers/samto…
-## 6 tl_sortBam /tmp/RtmpZFmZkJ/file5313fc2e97e/… samtools so… biocontainers/samto…</code></pre>
+## 1 tl_bwa_in… /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… bwa index    biocontainers/bwa:v…
+## 2 tl_bwa     /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… bwa mem      biocontainers/bwa:v…
+## 3 tl_markdup /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… picard Mark… quay.io/biocontaine…
+## 4 tl_sam2bam /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… samtools vi… biocontainers/samto…
+## 5 tl_samtoo… /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… samtools in… biocontainers/samto…
+## 6 tl_sortBam /tmp/RtmpZjf3Pi/file4cf26d2d8cb/… samtools so… biocontainers/samto…</code></pre>
 <p>Let’s load all the tools into <em>R</em> environment.</p>
 <div class="sourceCode" id="cb77"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">tls</span><span class="op">$</span><span class="va">rpath</span>, <span class="va">cwlInstall</span><span class="op">)</span><span class="op">)</span></pre></div>
@@ -751,8 +751,8 @@
 ## Using compatibility `.name_repair`.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<div id="htmlwidget-c394db28d37244275af2" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c394db28d37244275af2">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"threads\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,6!\"] \n  \"2\" [label = \"RG\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"1,6!\"] \n  \"3\" [label = \"Ref\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,6!\"] \n  \"4\" [label = \"FQ1\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"3,6!\"] \n  \"5\" [label = \"FQ2\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"4,6!\"] \n  \"6\" [label = \"Idx\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,1!\"] \n  \"7\" [label = \"bwa\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,5!\"] \n  \"8\" [label = \"sam2bam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,4!\"] \n  \"9\" [label = \"sortBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,3!\"] \n  \"10\" [label = \"idxBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,2!\"] \n  \"1\"->\"7\" \n  \"2\"->\"7\" \n  \"3\"->\"7\" \n  \"4\"->\"7\" \n  \"5\"->\"7\" \n  \"7\"->\"8\" \n  \"8\"->\"9\" \n  \"9\"->\"10\" \n  \"10\"->\"6\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><div align="center">
+<div id="htmlwidget-b09908231c12a9da1a10" style="width:700px;height:432.632880098888px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b09908231c12a9da1a10">{"x":{"diagram":"digraph {\n\ngraph [layout = \"neato\",\n       outputorder = \"edgesfirst\",\n       bgcolor = \"white\"]\n\nnode [fontname = \"Helvetica\",\n      fontsize = \"10\",\n      shape = \"circle\",\n      fixedsize = \"true\",\n      width = \"0.5\",\n      style = \"filled\",\n      fillcolor = \"aliceblue\",\n      color = \"gray70\",\n      fontcolor = \"gray50\"]\n\nedge [fontname = \"Helvetica\",\n     fontsize = \"8\",\n     len = \"1.5\",\n     color = \"gray80\",\n     arrowsize = \"0.5\"]\n\n  \"1\" [label = \"threads\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"0,6!\"] \n  \"2\" [label = \"RG\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"1,6!\"] \n  \"3\" [label = \"Ref\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,6!\"] \n  \"4\" [label = \"FQ1\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"3,6!\"] \n  \"5\" [label = \"FQ2\", shape = \"rectangle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"4,6!\"] \n  \"6\" [label = \"Idx\", shape = \"circle\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,1!\"] \n  \"7\" [label = \"bwa\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,5!\"] \n  \"8\" [label = \"sam2bam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,4!\"] \n  \"9\" [label = \"sortBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,3!\"] \n  \"10\" [label = \"idxBam\", shape = \"diamond\", fillcolor = \"#F0F8FF\", fontcolor = \"#000000\", pos = \"2,2!\"] \n  \"1\"->\"7\" \n  \"2\"->\"7\" \n  \"3\"->\"7\" \n  \"4\"->\"7\" \n  \"5\"->\"7\" \n  \"7\"->\"8\" \n  \"8\"->\"9\" \n  \"9\"->\"10\" \n  \"10\"->\"6\" \n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script><div align="center">
 <strong>Figure 7:</strong> Visualization for the pipeline <code>Align</code>.
 </div>
 <p></p>
