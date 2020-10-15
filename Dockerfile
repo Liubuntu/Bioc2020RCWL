@@ -21,7 +21,7 @@ ENV PATH=/opt/STAR:$PATH
 
 RUN rm -r /usr/local/lib/python2.7/dist-packages/cwltool & rm /usr/local/bin/cwltool
 RUN pip3 install -I cwltool
-#RUN sed -i 's/_SINGULARITY_VERSION = ""/_SINGULARITY_VERSION = "3.5.3"/' /usr/local/lib/python3.6/dist-packages/cwltool/singularity.py
+RUN sed -i 's/_SINGULARITY_VERSION = ""/_SINGULARITY_VERSION = "3.5.3"/' /usr/local/lib/python3.8/dist-packages/cwltool/singularity.py
 
 RUN Rscript -e "install.packages(c('Rcpp', 'pkgbuild', 'git2r'), repos='http://cran.r-project.org')"
 RUN Rscript -e "devtools::install('.', dependencies=TRUE, build_vignettes=TRUE, repos = BiocManager::repositories())"

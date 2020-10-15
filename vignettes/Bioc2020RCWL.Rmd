@@ -297,7 +297,7 @@ The `runCWL(docker = )` takes 3 values:
 ```{r, eval=FALSE}
 system.time(
     runCWL(cwl = STARindex, outdir = file.path(outpath, "STARindex_output"),
-           docker = "singularity", showLog = TRUE)
+           docker = FALSE, showLog = TRUE)
     ) ## elapsed: 74.795S
 dir(file.path(outpath, "STARindex_output"), recursive = TRUE)
 ```
@@ -320,7 +320,7 @@ Now we can follow the previous example to load our `Rcwl` version of
 `STARsolo` and run the command in _R_.
 
 ```{r}
-cwlLoad("tl_STARsolo")  ## "tl_STARsolo"
+STARsolo <- cwlLoad("tl_STARsolo")  ## "tl_STARsolo"
 STARsolo
 inputs(STARsolo)
 ```
@@ -340,7 +340,7 @@ writeCWL(STARsolo, prefix = file.path(outpath, "STARsolo"))
 
 ```{r, eval=FALSE}
 runCWL(STARsolo, outdir = file.path(outpath, "STARsolo_output"),
-       docker = "singularity", showLog = TRUE)  ## approximately 2 mins
+       docker = FALSE, showLog = TRUE)  ## approximately 2 mins
 dir(file.path(outpath, "STARsolo_output"), recursive = TRUE)
 ```     
 
@@ -425,7 +425,7 @@ STARsoloDropletUtils$runThreadN <- 1
 
 ```{r, eval=FALSE}
 runCWL(STARsoloDropletUtils, outdir = file.path(outpath, "scpipeline_output"),
-       docker = "singularity", showLog = TRUE)
+       docker = FALSE, showLog = TRUE)
 ```
 
 The overall output of the pipeline was pre-defined to glob the
